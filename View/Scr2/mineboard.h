@@ -2,9 +2,10 @@
 #define MINEBOARD_H
 
 #include <QWidget>
-#include <QPushButton>
+#include <QVector>
 
 class QGridLayout;
+class QPushButton;
 
 class MineBoard : public QWidget
 {
@@ -20,13 +21,14 @@ public:
 
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
-    QVector<QVector<QPushButton*>> m_buttons;
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
 
 private:
     void rebuildBoard();
+    QVector<QVector<QPushButton*>> m_buttons;
+    static constexpr int MinButtonSize = 40;
 
 private:
     QGridLayout* m_grid = nullptr;

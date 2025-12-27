@@ -10,29 +10,34 @@ MineView::MineView(QWidget* parent)
     m_stack = new QStackedWidget(this);
     setCentralWidget(m_stack);
 
-    // ===== Screens =====
     m_selectScreen = new ModeSelectWidget(this);
     m_boardScreen  = new CentralWidget(this);
 
     m_stack->addWidget(m_selectScreen); // index 0
     m_stack->addWidget(m_boardScreen);  // index 1
 
-    m_stack->setCurrentIndex(0);
+    showSelectScreen();
 
-    // ===== Select mode → Board =====
+    // ===== Forward intent =====
     connect(m_selectScreen, &ModeSelectWidget::modeSelected,
-            this, [this](int size)
-            {
-                m_boardScreen->setBoardSize(size);
-                m_stack->setCurrentIndex(1);
-            });
-
-    // ===== (Optional) Board → Back =====
+            this,           &MineView::modeSelected);
 
     connect(m_boardScreen, &CentralWidget::backRequested,
-            this, [this]()
-            {
-                m_stack->setCurrentIndex(0);
-            });
-
+            this,          &MineView::backRequested);
 }
+
+void MineView::showSelectScreen()
+{
+    m_stack->setCurrentIndex(0);
+}
+
+void MineView::showBoardScreen()
+{
+    m_stack->setCurrentIndex(1);
+}
+
+void MineView::setBoardSize(int size)
+{
+    m_boardScreen->setBoardSize(size);
+}
+

@@ -1,11 +1,14 @@
-#include "View/mineview.h"
-
 #include <QApplication>
+#include "View/MineView.h"
+#include "Controller/MineController.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
+
     MineView view;
+    MineController controller(&view);
+
     view.show();
-    return a.exec();
+    return app.exec();
 }

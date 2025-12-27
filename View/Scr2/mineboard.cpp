@@ -6,8 +6,6 @@
 #include <QtMath>
 #include <QDebug>
 
-static constexpr int MinButtonSize = 40;
-
 MineBoard::MineBoard(QWidget* parent)
     : QWidget(parent)
 {

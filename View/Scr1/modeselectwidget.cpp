@@ -11,12 +11,17 @@ ModeSelectWidget::ModeSelectWidget(QWidget* parent)
 
     const int minButtonSize = 160;
     const int minBoardSize  = minButtonSize * 2;
-
     setMinimumSize(minBoardSize, minBoardSize);
 
-    // ⭐ FORWARD SIGNAL
-    connect(m_board, &BoardSelect::modeSelected,
-            this,    &ModeSelectWidget::modeSelected);
+    // ===== Aggregate UI intent =====
+    connect(m_board, &BoardSelect::mode8Requested,
+            this,     [this]() { emit modeSelected(8); });
+
+    connect(m_board, &BoardSelect::mode16Requested,
+            this,     [this]() { emit modeSelected(16); });
+
+    connect(m_board, &BoardSelect::mode32Requested,
+            this,     [this]() { emit modeSelected(32); });
 }
 
 void ModeSelectWidget::resizeEvent(QResizeEvent* event)

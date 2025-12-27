@@ -20,14 +20,14 @@ CentralWidget::CentralWidget(QWidget* parent)
     // ===== Right: Side panel =====
     m_side = new SidePanel(this);
 
+    // Forward intent
     connect(m_side, &SidePanel::backRequested,
-            this,        &CentralWidget::backRequested);
+            this,   &CentralWidget::backRequested);
 
     // ===== Assemble =====
     mainLayout->addWidget(m_board, 1);
     mainLayout->addWidget(m_side);
 }
-
 
 void CentralWidget::setBoardSize(int size)
 {

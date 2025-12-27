@@ -41,6 +41,8 @@ else()
             View/Scr2/mineboard.h View/Scr2/mineboard.cpp
             View/Scr2/sidepanel.h View/Scr2/sidepanel.cpp
             View/mineview.h View/mineview.cpp
+
+            Controller/minecontroller.cpp Controller/minecontroller.h
         )
     endif()
 endif()

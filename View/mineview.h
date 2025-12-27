@@ -8,14 +8,26 @@ class QStackedWidget;
 class ModeSelectWidget;
 class CentralWidget;
 
-class MineView : public QMainWindow
-{
+class MineView : public QMainWindow {
+    Q_OBJECT
 public:
     explicit MineView(QWidget* parent = nullptr);
+
+    // UI API cho Controller
+    void showSelectScreen();
+    void showBoardScreen();
+    void setBoardSize(int size);
+
+signals:
+    // Forward intent từ screen
+    void modeSelected(int size);
+    void backRequested();
+
 private:
-    QStackedWidget*   m_stack        = nullptr;
-    ModeSelectWidget* m_selectScreen = nullptr;
-    CentralWidget*     m_boardScreen  = nullptr;
+    QStackedWidget*   m_stack;
+    ModeSelectWidget* m_selectScreen;
+    CentralWidget*    m_boardScreen;
 };
+
 
 #endif // MINEVIEW_H

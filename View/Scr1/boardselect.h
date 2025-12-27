@@ -3,14 +3,15 @@
 
 #include <QWidget>
 
-class BoardSelect : public QWidget
-{
+class BoardSelect : public QWidget {
     Q_OBJECT
 public:
     explicit BoardSelect(QWidget* parent = nullptr);
 
 signals:
-    void modeSelected(int size);   // ⭐ NEW
+    void mode8Requested();
+    void mode16Requested();
+    void mode32Requested();
 };
 
 #endif // BOARDSELLECT_H

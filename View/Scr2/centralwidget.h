@@ -6,20 +6,21 @@
 class MineBoard;
 class SidePanel;
 
-class CentralWidget : public QWidget
-{
+class CentralWidget : public QWidget {
     Q_OBJECT
-
 public:
     explicit CentralWidget(QWidget* parent = nullptr);
+
+    // UI API cho Controller / MainView
     void setBoardSize(int size);
 
-private:
-    MineBoard* m_board = nullptr;
-    SidePanel* m_side = nullptr;
-
 signals:
+    // Intent UI
     void backRequested();
+
+private:
+    MineBoard* m_board;
+    SidePanel* m_side;
 };
 
 #endif // CENTRALWIDGET_H
