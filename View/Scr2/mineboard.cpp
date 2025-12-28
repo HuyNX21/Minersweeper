@@ -9,9 +9,9 @@
 #include <QDebug>
 
 namespace {
+
 const char* BOARD_STYLE = R"(
 
-/* ===== CLOSED CELL ===== */
 QPushButton {
     background-color: #c0c0c0;
     border-top: 2px solid #ffffff;
@@ -19,10 +19,8 @@ QPushButton {
     border-bottom: 2px solid #808080;
     border-right: 2px solid #808080;
     font-weight: bold;
-    font-size: 14px;
 }
 
-/* Pressed effect */
 QPushButton:pressed {
     border-top: 2px solid #808080;
     border-left: 2px solid #808080;
@@ -30,26 +28,11 @@ QPushButton:pressed {
     border-right: 2px solid #ffffff;
 }
 
-/* ===== OPENED CELL BASE ===== */
 QPushButton:disabled {
     border: 1px solid #a0a0a0;
-    font-size: 14px;   /* ô trống */
 }
 
-/* ===== OPENED CELL WITH NUMBER ===== */
-QPushButton:disabled[cellValue="1"],
-QPushButton:disabled[cellValue="2"],
-QPushButton:disabled[cellValue="3"],
-QPushButton:disabled[cellValue="4"],
-QPushButton:disabled[cellValue="5"],
-QPushButton:disabled[cellValue="6"],
-QPushButton:disabled[cellValue="7"],
-QPushButton:disabled[cellValue="8"] {
-    font-size: 20px;   /* 👈 số to hơn */
-    font-weight: bold;
-}
-
-/* ===== BACKGROUND COLOR BY VALUE ===== */
+/* Background by value */
 QPushButton:disabled[cellValue="0"] { background-color: #D9D9D9; }
 QPushButton:disabled[cellValue="1"] { background-color: #D7F7CB; }
 QPushButton:disabled[cellValue="2"] { background-color: #F0F7CB; }
@@ -61,8 +44,8 @@ QPushButton:disabled[cellValue="7"] { background-color: #F77070; }
 QPushButton:disabled[cellValue="8"] { background-color: #FF3B3B; }
 
 )";
-}
 
+}
 
 MineBoard::MineBoard(QWidget* parent)
     : QWidget(parent)
@@ -86,6 +69,8 @@ void MineBoard::setBoardSize(int size)
 
     const int minSide = MinButtonSize * m_boardSize;
     setMinimumSize(minSide, minSide);
+
+    updateCellFont();
 
     updateGeometry();
 }
@@ -159,7 +144,7 @@ void MineBoard::revealMine(int row, int col)
 
     btn->setEnabled(false);
     btn->setText("X");
-    btn->setProperty("cellValue", 8); // màu đỏ đậm
+    btn->setProperty("cellValue", 8); // red color
 
     btn->style()->unpolish(btn);
     btn->style()->polish(btn);
@@ -179,6 +164,30 @@ void MineBoard::resetBoard()
 
             btn->style()->unpolish(btn);
             btn->style()->polish(btn);
+        }
+    }
+}
+
+void MineBoard::updateCellFont()
+{
+    if (m_boardSize <= 0)
+        return;
+
+    const int boardSide = qMin(width(), height());
+    const int cellSize  = boardSide / m_boardSize;
+
+    int fontSize = qBound(12, static_cast<int>(cellSize * 0.6), 48);
+
+    QFont f;
+    f.setBold(true);
+    f.setWeight(QFont::Bold);
+    f.setPixelSize(fontSize);
+
+    for (auto& row : m_buttons) {
+        for (QPushButton* btn : row) {
+            if (!btn) continue;
+            btn->setFont(f);
+            btn->setStyleSheet("color: #333333;");
         }
     }
 }
@@ -212,5 +221,7 @@ QSize MineBoard::minimumSizeHint() const
 void MineBoard::resizeEvent(QResizeEvent* event)
 {
     QWidget::resizeEvent(event);
+    updateCellFont();
 }
+
 

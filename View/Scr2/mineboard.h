@@ -35,6 +35,7 @@ protected:
 
 private:
     void rebuildBoard();
+    void updateCellFont();
 
 private:
     QVector<QVector<QPushButton*>> m_buttons;
