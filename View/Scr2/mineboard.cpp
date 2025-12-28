@@ -4,35 +4,77 @@
 #include <QPushButton>
 #include <QResizeEvent>
 #include <QtMath>
+#include <QStyle>
+#include <QSizePolicy>
 #include <QDebug>
+
+namespace {
+const char* BOARD_STYLE = R"(
+
+/* ===== CLOSED CELL ===== */
+QPushButton {
+    background-color: #c0c0c0;
+    border-top: 2px solid #ffffff;
+    border-left: 2px solid #ffffff;
+    border-bottom: 2px solid #808080;
+    border-right: 2px solid #808080;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Pressed effect */
+QPushButton:pressed {
+    border-top: 2px solid #808080;
+    border-left: 2px solid #808080;
+    border-bottom: 2px solid #ffffff;
+    border-right: 2px solid #ffffff;
+}
+
+/* ===== OPENED CELL BASE ===== */
+QPushButton:disabled {
+    border: 1px solid #a0a0a0;
+    font-size: 14px;   /* ô trống */
+}
+
+/* ===== OPENED CELL WITH NUMBER ===== */
+QPushButton:disabled[cellValue="1"],
+QPushButton:disabled[cellValue="2"],
+QPushButton:disabled[cellValue="3"],
+QPushButton:disabled[cellValue="4"],
+QPushButton:disabled[cellValue="5"],
+QPushButton:disabled[cellValue="6"],
+QPushButton:disabled[cellValue="7"],
+QPushButton:disabled[cellValue="8"] {
+    font-size: 20px;   /* 👈 số to hơn */
+    font-weight: bold;
+}
+
+/* ===== BACKGROUND COLOR BY VALUE ===== */
+QPushButton:disabled[cellValue="0"] { background-color: #D9D9D9; }
+QPushButton:disabled[cellValue="1"] { background-color: #D7F7CB; }
+QPushButton:disabled[cellValue="2"] { background-color: #F0F7CB; }
+QPushButton:disabled[cellValue="3"] { background-color: #F7F0C3; }
+QPushButton:disabled[cellValue="4"] { background-color: #F7E7B1; }
+QPushButton:disabled[cellValue="5"] { background-color: #F7D89F; }
+QPushButton:disabled[cellValue="6"] { background-color: #F7A87F; }
+QPushButton:disabled[cellValue="7"] { background-color: #F77070; }
+QPushButton:disabled[cellValue="8"] { background-color: #FF3B3B; }
+
+)";
+}
+
 
 MineBoard::MineBoard(QWidget* parent)
     : QWidget(parent)
 {
+    setStyleSheet(BOARD_STYLE);
+
     m_grid = new QGridLayout(this);
     m_grid->setSpacing(1);
     m_grid->setContentsMargins(0, 0, 0, 0);
 
     setBoardSize(8);
 }
-
-QString MineBoard::colorForValue(int value) const
-{
-    switch (value) {
-    case 0: return "#D9D9D9"; // default
-    case 1: return "#D7F7CB";
-    case 2: return "#F0F7CB";
-    case 3: return "#F7F0C3";
-    case 4: return "#F7E7B1";
-    case 5: return "#F7D89F";
-    case 6: return "#F7A87F";
-    case 7: return "#F77070";
-    case 8: return "#FF3B3B";
-    default:
-        return "#D9D9D9";
-    }
-}
-
 
 void MineBoard::setBoardSize(int size)
 {
@@ -50,48 +92,24 @@ void MineBoard::setBoardSize(int size)
 
 void MineBoard::rebuildBoard()
 {
-    while (QLayoutItem* item = m_grid->takeAt(0))
-    {
+    // Clear old layout
+    while (QLayoutItem* item = m_grid->takeAt(0)) {
         delete item->widget();
         delete item;
     }
 
     m_buttons.resize(m_boardSize);
 
-    QString buttonStyle = R"(
-    QPushButton {
-        background-color: #c0c0c0;
-        border-top: 2px solid #ffffff;
-        border-left: 2px solid #ffffff;
-        border-bottom: 2px solid #808080;
-        border-right: 2px solid #808080;
-        font-weight: bold;
-    }
-
-    QPushButton:pressed {
-        border-top: 2px solid #808080;
-        border-left: 2px solid #808080;
-        border-bottom: 2px solid #ffffff;
-        border-right: 2px solid #ffffff;
-    }
-
-    QPushButton:disabled {
-        background-color: #d6d6d6;
-        border: 1px solid #a0a0a0;
-    }
-    )";
-
-    for (int r = 0; r < m_boardSize; ++r)
-    {
+    for (int r = 0; r < m_boardSize; ++r) {
         m_buttons[r].resize(m_boardSize);
-        for (int c = 0; c < m_boardSize; ++c)
-        {
+
+        for (int c = 0; c < m_boardSize; ++c) {
             auto* btn = new QPushButton(this);
 
             btn->setSizePolicy(QSizePolicy::Ignored,
                                QSizePolicy::Ignored);
 
-            btn->setStyleSheet(buttonStyle);
+            btn->setProperty("cellValue", QVariant());
 
             connect(btn, &QPushButton::clicked,
                     this, [this, r, c]() {
@@ -99,7 +117,6 @@ void MineBoard::rebuildBoard()
                     });
 
             m_grid->addWidget(btn, r, c);
-
             m_buttons[r][c] = btn;
         }
     }
@@ -115,20 +132,19 @@ void MineBoard::openCell(int row, int col, int value)
     if (!btn || !btn->isEnabled())
         return;
 
+    // Set state
     btn->setEnabled(false);
+    btn->setProperty("cellValue", value);
 
-    // Set text
-    if (value > 0) {
+    // Text
+    if (value > 0)
         btn->setText(QString::number(value));
-    } else {
+    else
         btn->setText("");
-    }
 
-    // Set background color theo value
-    const QString color = colorForValue(value);
-    btn->setStyleSheet(QString(
-                           "QPushButton:disabled { background-color: %1; border: 1px solid #a0a0a0; }"
-                           ).arg(color));
+    // Refresh style
+    btn->style()->unpolish(btn);
+    btn->style()->polish(btn);
 }
 
 void MineBoard::revealMine(int row, int col)
@@ -141,8 +157,12 @@ void MineBoard::revealMine(int row, int col)
     if (!btn)
         return;
 
-    btn->setText("X");
     btn->setEnabled(false);
+    btn->setText("X");
+    btn->setProperty("cellValue", 8); // màu đỏ đậm
+
+    btn->style()->unpolish(btn);
+    btn->style()->polish(btn);
 }
 
 void MineBoard::resetBoard()
@@ -155,6 +175,10 @@ void MineBoard::resetBoard()
 
             btn->setEnabled(true);
             btn->setText("");
+            btn->setProperty("cellValue", QVariant());
+
+            btn->style()->unpolish(btn);
+            btn->style()->polish(btn);
         }
     }
 }

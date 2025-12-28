@@ -35,7 +35,6 @@ protected:
 
 private:
     void rebuildBoard();
-    QString colorForValue(int value) const;
 
 private:
     QVector<QVector<QPushButton*>> m_buttons;
