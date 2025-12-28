@@ -41,3 +41,7 @@ void MineView::setBoardSize(int size)
     m_boardScreen->setBoardSize(size);
 }
 
+MineBoard* MineView::board() const
+{
+    return m_boardScreen->board();
+}

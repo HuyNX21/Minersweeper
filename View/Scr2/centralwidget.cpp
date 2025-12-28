@@ -33,3 +33,8 @@ void CentralWidget::setBoardSize(int size)
 {
     m_board->setBoardSize(size);
 }
+
+MineBoard* CentralWidget::board() const
+{
+    return m_board;
+}

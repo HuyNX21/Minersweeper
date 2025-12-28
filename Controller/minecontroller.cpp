@@ -1,5 +1,6 @@
 #include "MineController.h"
 #include "../View/mineview.h"
+#include "../View/Scr2/mineboard.h"
 
 MineController::MineController(MineView* view)
     : m_view(view)
@@ -9,6 +10,9 @@ MineController::MineController(MineView* view)
 
     connect(m_view, &MineView::backRequested,
             this,   &MineController::onBackRequested);
+
+    connect(m_view->board(), &MineBoard::cellClicked,
+            this,  &MineController::onCellClicked);
 }
 
 void MineController::onModeSelected(int size)
@@ -20,4 +24,9 @@ void MineController::onModeSelected(int size)
 void MineController::onBackRequested()
 {
     m_view->showSelectScreen();
+}
+
+void MineController::onCellClicked(int row, int col)
+{
+    qDebug() << "Cell clicked:" << row << col;
 }

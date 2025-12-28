@@ -49,6 +49,11 @@ void MineBoard::rebuildBoard()
             btn->setSizePolicy(QSizePolicy::Ignored,
                                QSizePolicy::Ignored);
 
+            connect(btn, &QPushButton::clicked,
+                    this, [this, r, c]() {
+                        emit cellClicked(r, c);
+                    });
+
             m_grid->addWidget(btn, r, c);
 
             m_buttons[r][c] = btn;

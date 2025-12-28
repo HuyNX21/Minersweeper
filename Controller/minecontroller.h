@@ -3,6 +3,7 @@
 
 #pragma once
 #include <QObject>
+#include <QDebug>
 
 class MineView;
 
@@ -14,6 +15,7 @@ public:
 private slots:
     void onModeSelected(int size);
     void onBackRequested();
+    void onCellClicked(int row, int col);
 
 private:
     MineView* m_view;

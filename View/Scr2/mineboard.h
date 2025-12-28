@@ -22,6 +22,9 @@ public:
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
 
+signals:
+    void cellClicked(int row, int col);
+
 protected:
     void resizeEvent(QResizeEvent* event) override;
 

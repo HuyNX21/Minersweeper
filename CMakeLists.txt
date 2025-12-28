@@ -43,6 +43,9 @@ else()
             View/mineview.h View/mineview.cpp
 
             Controller/minecontroller.cpp Controller/minecontroller.h
+
+
+            Model/boardmodel.cpp Model/boardmodel.h Model/minemodel.cpp Model/minemodel.h
         )
     endif()
 endif()
