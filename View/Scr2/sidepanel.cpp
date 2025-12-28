@@ -71,6 +71,11 @@ void SidePanel::setPauseButtonText(const QString& text)
     m_pauseBtn->setText(text);
 }
 
+void SidePanel::setPauseEnabled(bool enabled)
+{
+    m_pauseBtn->setEnabled(enabled);
+}
+
 void SidePanel::startClock()
 {
     m_elapsedSec = 0;

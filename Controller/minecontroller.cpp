@@ -39,6 +39,9 @@ void MineController::onModeSelected(int size, int mines)
 
     m_view->setBoardSize(size);
     m_view->mineBoard()->resetBoard();
+    m_view->sidePanel()->resetClock();
+    m_view->sidePanel()->setPauseButtonText("Pause");
+    m_view->sidePanel()->setPauseEnabled(false);
     m_view->showBoardScreen();
 }
 
@@ -52,6 +55,7 @@ void MineController::onCellClicked(int row, int col)
 {
     if (m_model->state() == MineModel::GameState::NotStarted) {
         m_view->sidePanel()->startClock();
+        m_view->sidePanel()->setPauseEnabled(true);
     }
 
     if (m_model->state() == MineModel::GameState::Paused)
@@ -68,6 +72,13 @@ void MineController::onCellOpened(int row, int col, int value)
 
 void MineController::onGameOver(bool win)
 {
+    m_view->sidePanel()->setPauseButtonText("Change Difficutly");
+
+    m_view->sidePanel()->pauseClock();
+
+    connect(m_view->sidePanel(), &SidePanel::pauseRequested,
+            this, &MineController::onBackRequested);
+
     //m_view->showGameOverDialog(win);
 }
 
@@ -96,7 +107,7 @@ void MineController::onPauseRequested()
         m_view->mineBoard()->showPausedOverlay(true);
         m_view->sidePanel()->setPauseButtonText("Resume");
     }
-    else {
+    else if (m_model->state() == MineModel::GameState::Paused) {
         m_model->setState(MineModel::GameState::Running);
         m_view->sidePanel()->resumeClock();
         m_view->mineBoard()->showPausedOverlay(false);

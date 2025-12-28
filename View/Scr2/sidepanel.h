@@ -19,6 +19,7 @@ public:
     void resetClock();
 
     void setPauseButtonText(const QString& text);
+    void setPauseEnabled(bool enabled);
 
 signals:
     void backRequested();

@@ -34,7 +34,6 @@ signals:
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
-    void paintEvent(QPaintEvent* event) override;
 
 private:
     void rebuildBoard();
@@ -45,7 +44,7 @@ private:
     static constexpr int MinButtonSize = 40;
     QGridLayout* m_grid = nullptr;
     int m_boardSize = 0;
-    bool m_pausedOverlay = false;
+    QWidget* m_pauseOverlay = nullptr;
 };
 
 #endif // MINEBOARD_H

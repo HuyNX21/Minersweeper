@@ -8,6 +8,7 @@
 #include <QSizePolicy>
 #include <QDebug>
 #include <QPainter>
+#include <QLabel>
 
 namespace {
 
@@ -60,6 +61,29 @@ MineBoard::MineBoard(QWidget* parent)
     m_grid->setContentsMargins(0, 0, 0, 0);
 
     setBoardSize(8);
+
+    // ===== PAUSE OVERLAY =====
+    m_pauseOverlay = new QWidget(this);
+    m_pauseOverlay->hide();
+    m_pauseOverlay->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+
+    m_pauseOverlay->setStyleSheet(
+        "background-color: #7f7f7f;"   // xám đặc
+    );
+
+    auto* label = new QLabel("Paused", m_pauseOverlay);
+    label->setAlignment(Qt::AlignCenter);
+    label->setStyleSheet(
+        "color: white;"
+        "font-size: 36px;"
+        "font-weight: bold;"
+        "letter-spacing: 4px;"
+        );
+
+    auto* layout = new QVBoxLayout(m_pauseOverlay);
+    layout->addStretch();
+    layout->addWidget(label, 0, Qt::AlignCenter);
+    layout->addStretch();
 }
 
 void MineBoard::setBoardSize(int size)
@@ -206,27 +230,11 @@ void MineBoard::updateCellFont()
 
 void MineBoard::showPausedOverlay(bool show)
 {
-    m_pausedOverlay = show;
-    update();
-}
-
-void MineBoard::paintEvent(QPaintEvent* event)
-{
-    QWidget::paintEvent(event);
-
-    if (!m_pausedOverlay)
+    if (!m_pauseOverlay)
         return;
 
-    QPainter p(this);
-    p.fillRect(rect(), QColor(0, 0, 0, 150)); // xám mờ
-
-    QFont f = p.font();
-    f.setBold(true);
-    f.setPixelSize(height() / 8);
-    p.setFont(f);
-
-    p.setPen(Qt::white);
-    p.drawText(rect(), Qt::AlignCenter, "Paused");
+    m_pauseOverlay->setVisible(show);
+    m_pauseOverlay->raise(); // đảm bảo nằm trên cùng
 }
 
 
@@ -258,6 +266,10 @@ QSize MineBoard::minimumSizeHint() const
 void MineBoard::resizeEvent(QResizeEvent* event)
 {
     QWidget::resizeEvent(event);
+
+    if (m_pauseOverlay)
+        m_pauseOverlay->setGeometry(rect());
+
     updateCellFont();
 }
 
