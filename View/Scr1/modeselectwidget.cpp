@@ -35,5 +35,7 @@ void ModeSelectWidget::resizeEvent(QResizeEvent* event)
     int x = (width()  - side) / 2;
     int y = (height() - side) / 2;
 
+    qDebug() << x << y << side;
+
     m_board->setGeometry(x, y, side, side);
 }

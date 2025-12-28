@@ -7,6 +7,7 @@
 MineView::MineView(QWidget* parent)
     : QMainWindow(parent)
 {
+    resize(900, 700);
     m_stack = new QStackedWidget(this);
     setCentralWidget(m_stack);
 

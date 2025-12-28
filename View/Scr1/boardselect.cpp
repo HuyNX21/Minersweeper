@@ -9,13 +9,23 @@ BoardSelect::BoardSelect(QWidget* parent)
     grid->setSpacing(5);
     grid->setContentsMargins(0, 0, 0, 0);
 
-    auto* btn8  = new QPushButton(tr("8x8"), this);
-    auto* btn16 = new QPushButton(tr("16x16"), this);
-    auto* btn32 = new QPushButton(tr("32x32"), this);
-    auto* btnQ  = new QPushButton(tr("?"), this);
+    int fontSize = 15;
+    QFont f;
+    f.setBold(true);
+    f.setWeight(QFont::Bold);
+    f.setPixelSize(fontSize);
+
+    auto* btn8  = new QPushButton(tr("8 x 8\n 10 mines"), this);
+    auto* btn16 = new QPushButton(tr("16 x 16\n 40 mines"), this);
+    auto* btn32 = new QPushButton(tr("32 x 32\n 99 mines"), this);
+    auto* btnQ  = new QPushButton(tr("?\n custom"), this);
 
     for (auto* b : {btn8, btn16, btn32, btnQ})
+    {
         b->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        b->setFont(f);
+        b->setStyleSheet("color: #333333;");
+    }
 
     grid->addWidget(btn8,  0, 0);
     grid->addWidget(btn16, 0, 1);
