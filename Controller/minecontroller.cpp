@@ -60,10 +60,19 @@ void MineController::onGameOver(bool win)
     //m_view->showGameOverDialog(win);
 }
 
-void MineController::onMinesRevealed(const QVector<QPoint>& mines)
+void MineController::onMinesRevealed(int rowMineTriggered, int colMineTriggered, const QVector<QPoint>& mines)
 {
     auto* board = m_view->board();
-    for (const QPoint& p : mines) {
-        board->revealMine(p.x(), p.y());
+
+    for (const QPoint& p : mines)
+    {
+        if(rowMineTriggered == p.x() && colMineTriggered == p.y())
+        {
+            board->revealMine(p.x(), p.y(), true);
+        }
+        else
+        {
+            board->revealMine(p.x(), p.y(), false);
+        }
     }
 }

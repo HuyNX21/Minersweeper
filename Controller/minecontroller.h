@@ -23,7 +23,7 @@ private slots:
     void onCellOpened(int row, int col, int value);
     void onGameOver(bool win);
 
-    void onMinesRevealed(const QVector<QPoint>& mines);
+    void onMinesRevealed(int rowMineTriggered, int colMineTriggered, const QVector<QPoint>& mines);
 
 private:
     MineView*  m_view;

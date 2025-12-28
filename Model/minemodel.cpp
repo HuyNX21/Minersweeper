@@ -52,7 +52,7 @@ void MineModel::openCell(int row, int col)
         m_state = GameState::Finished;
 
         // NEW
-        emit minesRevealed(m_board->allMines());
+        emit minesRevealed(row, col, m_board->allMines());
         emit gameOver(false);
         return;
     }

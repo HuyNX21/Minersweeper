@@ -33,15 +33,17 @@ QPushButton:disabled {
 }
 
 /* Background by value */
-QPushButton:disabled[cellValue="0"] { background-color: #D9D9D9; }
-QPushButton:disabled[cellValue="1"] { background-color: #D7F7CB; }
-QPushButton:disabled[cellValue="2"] { background-color: #F0F7CB; }
-QPushButton:disabled[cellValue="3"] { background-color: #F7F0C3; }
-QPushButton:disabled[cellValue="4"] { background-color: #F7E7B1; }
-QPushButton:disabled[cellValue="5"] { background-color: #F7D89F; }
-QPushButton:disabled[cellValue="6"] { background-color: #F7A87F; }
-QPushButton:disabled[cellValue="7"] { background-color: #F77070; }
-QPushButton:disabled[cellValue="8"] { background-color: #FF3B3B; }
+QPushButton:disabled[cellValue="0"]  { background-color: #F0F0F0; }
+QPushButton:disabled[cellValue="1"]  { background-color: #D7F7CB; }
+QPushButton:disabled[cellValue="2"]  { background-color: #F0F7CB; }
+QPushButton:disabled[cellValue="3"]  { background-color: #F7F0C3; }
+QPushButton:disabled[cellValue="4"]  { background-color: #F7E7B1; }
+QPushButton:disabled[cellValue="5"]  { background-color: #F7D89F; }
+QPushButton:disabled[cellValue="6"]  { background-color: #F7A87F; }
+QPushButton:disabled[cellValue="7"]  { background-color: #F77070; }
+QPushButton:disabled[cellValue="8"]  { background-color: #FF3B3B; }
+QPushButton:disabled[cellValue="bomb"] { background-color: #787574; }
+QPushButton:disabled[cellValue="trig"] { background-color: #ABABAB; }
 
 )";
 
@@ -132,7 +134,7 @@ void MineBoard::openCell(int row, int col, int value)
     btn->style()->polish(btn);
 }
 
-void MineBoard::revealMine(int row, int col)
+void MineBoard::revealMine(int row, int col, bool flagMineTriggered)
 {
     if (row < 0 || row >= m_boardSize ||
         col < 0 || col >= m_boardSize)
@@ -143,8 +145,17 @@ void MineBoard::revealMine(int row, int col)
         return;
 
     btn->setEnabled(false);
-    btn->setText("X");
-    btn->setProperty("cellValue", 8); // red color
+
+    if(flagMineTriggered)
+    {
+        btn->setText("💥");
+        btn->setProperty("cellValue", "trig");
+    }
+    else
+    {
+        btn->setText("💣");
+        btn->setProperty("cellValue", "bomb");
+    }
 
     btn->style()->unpolish(btn);
     btn->style()->polish(btn);

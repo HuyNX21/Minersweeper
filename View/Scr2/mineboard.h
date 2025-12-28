@@ -24,7 +24,7 @@ public:
 
     // ===== API cho Controller =====
     void openCell(int row, int col, int value);
-    void revealMine(int row, int col);
+    void revealMine(int row, int col, bool flagMineTriggered);
     void resetBoard();
 
 signals:
