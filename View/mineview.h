@@ -22,7 +22,7 @@ public:
 
 signals:
     // Forward intent từ screen
-    void modeSelected(int size);
+    void modeSelected(int size, int mines);
     void backRequested();
 
 private:

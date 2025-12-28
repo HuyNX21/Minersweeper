@@ -22,6 +22,11 @@ public:
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
 
+    // ===== API cho Controller =====
+    void openCell(int row, int col, int value);
+    void revealMine(int row, int col);
+    void resetBoard();
+
 signals:
     void cellClicked(int row, int col);
 

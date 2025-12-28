@@ -61,6 +61,54 @@ void MineBoard::rebuildBoard()
     }
 }
 
+void MineBoard::openCell(int row, int col, int value)
+{
+    if (row < 0 || row >= m_boardSize ||
+        col < 0 || col >= m_boardSize)
+        return;
+
+    QPushButton* btn = m_buttons[row][col];
+    if (!btn || !btn->isEnabled())
+        return;
+
+    btn->setEnabled(false);
+
+    if (value > 0) {
+        btn->setText(QString::number(value));
+    } else {
+        btn->setText("");
+    }
+}
+
+void MineBoard::revealMine(int row, int col)
+{
+    if (row < 0 || row >= m_boardSize ||
+        col < 0 || col >= m_boardSize)
+        return;
+
+    QPushButton* btn = m_buttons[row][col];
+    if (!btn)
+        return;
+
+    btn->setText("X");
+    btn->setEnabled(false);
+}
+
+void MineBoard::resetBoard()
+{
+    for (int r = 0; r < m_boardSize; ++r) {
+        for (int c = 0; c < m_boardSize; ++c) {
+            QPushButton* btn = m_buttons[r][c];
+            if (!btn)
+                continue;
+
+            btn->setEnabled(true);
+            btn->setText("");
+        }
+    }
+}
+
+
 // ===== Qt layout contract =====
 
 bool MineBoard::hasHeightForWidth() const

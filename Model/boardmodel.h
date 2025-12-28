@@ -31,6 +31,8 @@ public:
     // Kiểm tra thắng
     bool checkWin() const;
 
+    QVector<QPoint> allMines() const;
+
 private:
     struct Cell {
         bool isMine   = false;

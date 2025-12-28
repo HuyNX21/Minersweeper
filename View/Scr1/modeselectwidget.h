@@ -14,7 +14,7 @@ protected:
     void resizeEvent(QResizeEvent* event) override;
 
 signals:
-    void modeSelected(int size);
+    void modeSelected(int size, int mines);
 
 private:
     BoardSelect* m_board;

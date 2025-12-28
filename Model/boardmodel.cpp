@@ -142,3 +142,15 @@ bool BoardModel::inBounds(int r, int c) const
 {
     return r >= 0 && r < m_rows && c >= 0 && c < m_cols;
 }
+
+QVector<QPoint> BoardModel::allMines() const
+{
+    QVector<QPoint> result;
+    for (int r = 0; r < m_rows; ++r) {
+        for (int c = 0; c < m_cols; ++c) {
+            if (m_cells[r][c].isMine)
+                result.push_back(QPoint(r, c));
+        }
+    }
+    return result;
+}

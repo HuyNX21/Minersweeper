@@ -41,7 +41,6 @@ void MineModel::openCell(int row, int col)
     if (m_state == GameState::Finished)
         return;
 
-    // First click → rải mine
     if (m_state == GameState::NotStarted) {
         startGame(row, col);
     }
@@ -51,11 +50,13 @@ void MineModel::openCell(int row, int col)
 
     if (hitMine) {
         m_state = GameState::Finished;
+
+        // NEW
+        emit minesRevealed(m_board->allMines());
         emit gameOver(false);
         return;
     }
 
-    // Thông báo tất cả ô được mở (flood fill)
     for (const QPoint& p : openedCells) {
         int value = m_board->adjacentMines(p.x(), p.y());
         emit cellOpened(p.x(), p.y(), value);

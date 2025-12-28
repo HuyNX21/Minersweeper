@@ -2,25 +2,33 @@
 #define MINECONTROLLER_H
 
 #pragma once
+
 #include <QObject>
-#include <QDebug>
 
 class MineView;
+class MineModel;
 
-class MineController : public QObject {
+class MineController : public QObject
+{
     Q_OBJECT
 public:
-    explicit MineController(MineView* view);
+    explicit MineController(MineView* view,MineModel* model, QObject* parent = nullptr);
 
 private slots:
-    void onModeSelected(int size);
+    void onModeSelected(int size, int mines);
     void onBackRequested();
     void onCellClicked(int row, int col);
 
-private:
-    MineView* m_view;
-};
+    // Model → View
+    void onCellOpened(int row, int col, int value);
+    void onGameOver(bool win);
 
+    void onMinesRevealed(const QVector<QPoint>& mines);
+
+private:
+    MineView*  m_view;
+    MineModel* m_model;
+};
 
 
 #endif // MINECONTROLLER_H

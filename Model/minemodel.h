@@ -39,6 +39,8 @@ signals:
     void cellFlagChanged(int row, int col, bool flagged);
     void gameOver(bool win);
 
+    void minesRevealed(const QVector<QPoint>& mines);
+
 private:
     void startGame(int safeRow, int safeCol);
 
