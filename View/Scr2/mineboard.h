@@ -35,10 +35,11 @@ protected:
 
 private:
     void rebuildBoard();
-    QVector<QVector<QPushButton*>> m_buttons;
-    static constexpr int MinButtonSize = 40;
+    QString colorForValue(int value) const;
 
 private:
+    QVector<QVector<QPushButton*>> m_buttons;
+    static constexpr int MinButtonSize = 40;
     QGridLayout* m_grid = nullptr;
     int m_boardSize = 0;
 };

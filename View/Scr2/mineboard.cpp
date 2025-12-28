@@ -10,11 +10,29 @@ MineBoard::MineBoard(QWidget* parent)
     : QWidget(parent)
 {
     m_grid = new QGridLayout(this);
-    m_grid->setSpacing(0);
+    m_grid->setSpacing(1);
     m_grid->setContentsMargins(0, 0, 0, 0);
 
     setBoardSize(8);
 }
+
+QString MineBoard::colorForValue(int value) const
+{
+    switch (value) {
+    case 0: return "#D9D9D9"; // default
+    case 1: return "#D7F7CB";
+    case 2: return "#F0F7CB";
+    case 3: return "#F7F0C3";
+    case 4: return "#F7E7B1";
+    case 5: return "#F7D89F";
+    case 6: return "#F7A87F";
+    case 7: return "#F77070";
+    case 8: return "#FF3B3B";
+    default:
+        return "#D9D9D9";
+    }
+}
+
 
 void MineBoard::setBoardSize(int size)
 {
@@ -37,8 +55,32 @@ void MineBoard::rebuildBoard()
         delete item->widget();
         delete item;
     }
-    qDebug() << m_boardSize;
+
     m_buttons.resize(m_boardSize);
+
+    QString buttonStyle = R"(
+    QPushButton {
+        background-color: #c0c0c0;
+        border-top: 2px solid #ffffff;
+        border-left: 2px solid #ffffff;
+        border-bottom: 2px solid #808080;
+        border-right: 2px solid #808080;
+        font-weight: bold;
+    }
+
+    QPushButton:pressed {
+        border-top: 2px solid #808080;
+        border-left: 2px solid #808080;
+        border-bottom: 2px solid #ffffff;
+        border-right: 2px solid #ffffff;
+    }
+
+    QPushButton:disabled {
+        background-color: #d6d6d6;
+        border: 1px solid #a0a0a0;
+    }
+    )";
+
     for (int r = 0; r < m_boardSize; ++r)
     {
         m_buttons[r].resize(m_boardSize);
@@ -48,6 +90,8 @@ void MineBoard::rebuildBoard()
 
             btn->setSizePolicy(QSizePolicy::Ignored,
                                QSizePolicy::Ignored);
+
+            btn->setStyleSheet(buttonStyle);
 
             connect(btn, &QPushButton::clicked,
                     this, [this, r, c]() {
@@ -73,11 +117,18 @@ void MineBoard::openCell(int row, int col, int value)
 
     btn->setEnabled(false);
 
+    // Set text
     if (value > 0) {
         btn->setText(QString::number(value));
     } else {
         btn->setText("");
     }
+
+    // Set background color theo value
+    const QString color = colorForValue(value);
+    btn->setStyleSheet(QString(
+                           "QPushButton:disabled { background-color: %1; border: 1px solid #a0a0a0; }"
+                           ).arg(color));
 }
 
 void MineBoard::revealMine(int row, int col)
