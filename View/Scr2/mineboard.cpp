@@ -7,6 +7,7 @@
 #include <QStyle>
 #include <QSizePolicy>
 #include <QDebug>
+#include <QPainter>
 
 namespace {
 
@@ -33,15 +34,15 @@ QPushButton:disabled {
 }
 
 /* Background by value */
-QPushButton:disabled[cellValue="0"]  { background-color: #F0F0F0; }
-QPushButton:disabled[cellValue="1"]  { background-color: #D7F7CB; }
-QPushButton:disabled[cellValue="2"]  { background-color: #F0F7CB; }
-QPushButton:disabled[cellValue="3"]  { background-color: #F7F0C3; }
-QPushButton:disabled[cellValue="4"]  { background-color: #F7E7B1; }
-QPushButton:disabled[cellValue="5"]  { background-color: #F7D89F; }
-QPushButton:disabled[cellValue="6"]  { background-color: #F7A87F; }
-QPushButton:disabled[cellValue="7"]  { background-color: #F77070; }
-QPushButton:disabled[cellValue="8"]  { background-color: #FF3B3B; }
+QPushButton:disabled[cellValue="0"]    { background-color: #F0F0F0; }
+QPushButton:disabled[cellValue="1"]    { background-color: #D7F7CB; }
+QPushButton:disabled[cellValue="2"]    { background-color: #F0F7CB; }
+QPushButton:disabled[cellValue="3"]    { background-color: #F7F0C3; }
+QPushButton:disabled[cellValue="4"]    { background-color: #F7E7B1; }
+QPushButton:disabled[cellValue="5"]    { background-color: #F7D89F; }
+QPushButton:disabled[cellValue="6"]    { background-color: #F7A87F; }
+QPushButton:disabled[cellValue="7"]    { background-color: #F77070; }
+QPushButton:disabled[cellValue="8"]    { background-color: #FF3B3B; }
 QPushButton:disabled[cellValue="bomb"] { background-color: #787574; }
 QPushButton:disabled[cellValue="trig"] { background-color: #ABABAB; }
 
@@ -201,6 +202,31 @@ void MineBoard::updateCellFont()
             btn->setStyleSheet("color: #333333;");
         }
     }
+}
+
+void MineBoard::showPausedOverlay(bool show)
+{
+    m_pausedOverlay = show;
+    update();
+}
+
+void MineBoard::paintEvent(QPaintEvent* event)
+{
+    QWidget::paintEvent(event);
+
+    if (!m_pausedOverlay)
+        return;
+
+    QPainter p(this);
+    p.fillRect(rect(), QColor(0, 0, 0, 150)); // xám mờ
+
+    QFont f = p.font();
+    f.setBold(true);
+    f.setPixelSize(height() / 8);
+    p.setFont(f);
+
+    p.setPen(Qt::white);
+    p.drawText(rect(), Qt::AlignCenter, "Paused");
 }
 
 

@@ -8,6 +8,7 @@ class QStackedWidget;
 class ModeSelectWidget;
 class CentralWidget;
 class MineBoard;
+class SidePanel;
 
 class MineView : public QMainWindow {
     Q_OBJECT
@@ -18,7 +19,8 @@ public:
     void showSelectScreen();
     void showBoardScreen();
     void setBoardSize(int size);
-    MineBoard* board() const;
+    MineBoard* mineBoard() const;
+    SidePanel* sidePanel() const;
 
 signals:
     // Forward intent từ screen

@@ -1,6 +1,7 @@
 #include "MineController.h"
 #include "../View/mineview.h"
 #include "../View/Scr2/mineboard.h"
+#include "../View/Scr2/sidepanel.h"
 #include "../Model/MineModel.h"
 
 MineController::MineController(MineView* view, MineModel* model, QObject* parent)
@@ -15,7 +16,7 @@ MineController::MineController(MineView* view, MineModel* model, QObject* parent
     connect(m_view, &MineView::backRequested,
             this,   &MineController::onBackRequested);
 
-    connect(m_view->board(), &MineBoard::cellClicked,
+    connect(m_view->mineBoard(), &MineBoard::cellClicked,
             this, &MineController::onCellClicked);
 
     // ===== Model → Controller =====
@@ -27,6 +28,9 @@ MineController::MineController(MineView* view, MineModel* model, QObject* parent
 
     connect(m_model, &MineModel::minesRevealed,
             this,    &MineController::onMinesRevealed);
+
+    connect(m_view->sidePanel(), &SidePanel::pauseRequested,
+            this, &MineController::onPauseRequested);
 }
 
 void MineController::onModeSelected(int size, int mines)
@@ -34,7 +38,7 @@ void MineController::onModeSelected(int size, int mines)
     m_model->setup(size, size, mines);
 
     m_view->setBoardSize(size);
-    m_view->board()->resetBoard();
+    m_view->mineBoard()->resetBoard();
     m_view->showBoardScreen();
 }
 
@@ -46,13 +50,20 @@ void MineController::onBackRequested()
 
 void MineController::onCellClicked(int row, int col)
 {
+    if (m_model->state() == MineModel::GameState::NotStarted) {
+        m_view->sidePanel()->startClock();
+    }
+
+    if (m_model->state() == MineModel::GameState::Paused)
+        return;
+
     m_model->openCell(row, col);
 }
 
 void MineController::onCellOpened(int row, int col, int value)
 {
     // value = số mìn xung quanh (0..8)
-    m_view->board()->openCell(row, col, value);
+    m_view->mineBoard()->openCell(row, col, value);
 }
 
 void MineController::onGameOver(bool win)
@@ -62,7 +73,7 @@ void MineController::onGameOver(bool win)
 
 void MineController::onMinesRevealed(int rowMineTriggered, int colMineTriggered, const QVector<QPoint>& mines)
 {
-    auto* board = m_view->board();
+    auto* board = m_view->mineBoard();
 
     for (const QPoint& p : mines)
     {
@@ -74,5 +85,21 @@ void MineController::onMinesRevealed(int rowMineTriggered, int colMineTriggered,
         {
             board->revealMine(p.x(), p.y(), false);
         }
+    }
+}
+
+void MineController::onPauseRequested()
+{
+    if (m_model->state() == MineModel::GameState::Running) {
+        m_model->setState(MineModel::GameState::Paused);
+        m_view->sidePanel()->pauseClock();
+        m_view->mineBoard()->showPausedOverlay(true);
+        m_view->sidePanel()->setPauseButtonText("Resume");
+    }
+    else {
+        m_model->setState(MineModel::GameState::Running);
+        m_view->sidePanel()->resumeClock();
+        m_view->mineBoard()->showPausedOverlay(false);
+        m_view->sidePanel()->setPauseButtonText("Pause");
     }
 }

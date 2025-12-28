@@ -13,7 +13,8 @@ public:
 
     // UI API cho Controller / MainView
     void setBoardSize(int size);
-    MineBoard* board() const;
+    MineBoard* mineBoard() const;
+    SidePanel* sidePanel() const;
 
 signals:
     // Intent UI

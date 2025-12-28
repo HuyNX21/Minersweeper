@@ -28,6 +28,11 @@ MineModel::GameState MineModel::state() const
     return m_state;
 }
 
+void MineModel::setState(MineModel::GameState state)
+{
+    m_state = state;
+}
+
 void MineModel::startGame(int safeRow, int safeCol)
 {
     m_board->placeMines(m_mineCount, safeRow, safeCol);

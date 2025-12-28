@@ -17,6 +17,7 @@ public:
     enum class GameState {
         NotStarted,
         Running,
+        Paused,
         Finished
     };
     Q_ENUM(GameState)
@@ -32,6 +33,7 @@ public:
     void openCell(int row, int col);
 
     GameState state() const;
+    void setState(GameState);
 
 signals:
     // Thông báo cho Controller để update View

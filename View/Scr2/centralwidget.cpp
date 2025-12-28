@@ -34,7 +34,12 @@ void CentralWidget::setBoardSize(int size)
     m_board->setBoardSize(size);
 }
 
-MineBoard* CentralWidget::board() const
+MineBoard* CentralWidget::mineBoard() const
 {
     return m_board;
+}
+
+SidePanel* CentralWidget::sidePanel() const
+{
+    return m_side;
 }

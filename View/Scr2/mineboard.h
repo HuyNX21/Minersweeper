@@ -27,11 +27,14 @@ public:
     void revealMine(int row, int col, bool flagMineTriggered);
     void resetBoard();
 
+    void showPausedOverlay(bool show);
+
 signals:
     void cellClicked(int row, int col);
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
+    void paintEvent(QPaintEvent* event) override;
 
 private:
     void rebuildBoard();
@@ -42,6 +45,7 @@ private:
     static constexpr int MinButtonSize = 40;
     QGridLayout* m_grid = nullptr;
     int m_boardSize = 0;
+    bool m_pausedOverlay = false;
 };
 
 #endif // MINEBOARD_H

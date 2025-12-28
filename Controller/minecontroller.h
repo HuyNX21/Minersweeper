@@ -24,6 +24,7 @@ private slots:
     void onGameOver(bool win);
 
     void onMinesRevealed(int rowMineTriggered, int colMineTriggered, const QVector<QPoint>& mines);
+    void onPauseRequested();
 
 private:
     MineView*  m_view;
