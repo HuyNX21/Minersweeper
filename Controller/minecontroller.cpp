@@ -49,6 +49,7 @@ void MineController::onModeSelected(int size, int mines)
 void MineController::onBackRequested()
 {
     m_view->showSelectScreen();
+    m_view->mineBoard()->showPausedOverlay(false);
 }
 
 void MineController::onCellClicked(int row, int col)
@@ -72,12 +73,7 @@ void MineController::onCellOpened(int row, int col, int value)
 
 void MineController::onGameOver(bool win)
 {
-    m_view->sidePanel()->setPauseButtonText("Change Difficutly");
-
     m_view->sidePanel()->pauseClock();
-
-    connect(m_view->sidePanel(), &SidePanel::pauseRequested,
-            this, &MineController::onBackRequested);
 
     //m_view->showGameOverDialog(win);
 }

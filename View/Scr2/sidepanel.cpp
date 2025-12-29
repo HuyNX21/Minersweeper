@@ -37,9 +37,9 @@ SidePanel::SidePanel(QWidget* parent)
     // ===== BUTTONS =====
     const int sizeButton = 75;
 
-    b1        = new QPushButton("x", this);
-    m_btnBack = new QPushButton("Back", this);
-    m_pauseBtn= new QPushButton("Pause", this);
+    b1          = new QPushButton("x", this);
+    m_btnBack   = new QPushButton("Back", this);
+    m_pauseBtn  = new QPushButton("Pause", this);
 
     for (auto* b : {b1, m_btnBack, m_pauseBtn}) {
         b->setMinimumSize(sizeButton, sizeButton);
