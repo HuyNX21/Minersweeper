@@ -23,14 +23,18 @@ void MineModel::setup(int rows, int cols, int mineCount)
     m_state = GameState::NotStarted;
 }
 
-MineModel::GameState MineModel::state() const
+GameState MineModel::getState() const
 {
     return m_state;
 }
 
-void MineModel::setState(MineModel::GameState state)
+void MineModel::setState(GameState state)
 {
+    if (m_state == state)
+        return;
+
     m_state = state;
+    emit stateChanged(m_state);
 }
 
 void MineModel::startGame(int safeRow, int safeCol)
@@ -54,10 +58,8 @@ void MineModel::openCell(int row, int col)
     bool hitMine = m_board->openCell(row, col, openedCells);
 
     if (hitMine) {
-        m_state = GameState::Finished;
-
-        // NEW
         emit minesRevealed(row, col, m_board->allMines());
+        setState(GameState::Finished);
         emit gameOver(false);
         return;
     }

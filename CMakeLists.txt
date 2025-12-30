@@ -44,8 +44,8 @@ else()
 
             Controller/minecontroller.cpp Controller/minecontroller.h
 
-
             Model/boardmodel.cpp Model/boardmodel.h Model/minemodel.cpp Model/minemodel.h
+            Model/gamestate.h
         )
     endif()
 endif()

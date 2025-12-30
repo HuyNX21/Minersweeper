@@ -5,6 +5,8 @@
 
 #include <QObject>
 
+#include "../Model/GameState.h"
+
 class MineView;
 class MineModel;
 
@@ -25,6 +27,7 @@ private slots:
 
     void onMinesRevealed(int rowMineTriggered, int colMineTriggered, const QVector<QPoint>& mines);
     void onPauseRequested();
+    void onGameStateChanged(GameState);
 
 private:
     MineView*  m_view;

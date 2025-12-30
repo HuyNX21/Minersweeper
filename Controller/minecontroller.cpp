@@ -31,6 +31,9 @@ MineController::MineController(MineView* view, MineModel* model, QObject* parent
 
     connect(m_view->sidePanel(), &SidePanel::pauseRequested,
             this, &MineController::onPauseRequested);
+
+    connect(m_model, &MineModel::stateChanged,
+            this,    &MineController::onGameStateChanged);
 }
 
 void MineController::onModeSelected(int size, int mines)
@@ -54,12 +57,12 @@ void MineController::onBackRequested()
 
 void MineController::onCellClicked(int row, int col)
 {
-    if (m_model->state() == MineModel::GameState::NotStarted) {
+    if (m_model->getState() == GameState::NotStarted) {
         m_view->sidePanel()->startClock();
         m_view->sidePanel()->setPauseEnabled(true);
     }
 
-    if (m_model->state() == MineModel::GameState::Paused)
+    if (m_model->getState() == GameState::Paused)
         return;
 
     m_model->openCell(row, col);
@@ -97,16 +100,54 @@ void MineController::onMinesRevealed(int rowMineTriggered, int colMineTriggered,
 
 void MineController::onPauseRequested()
 {
-    if (m_model->state() == MineModel::GameState::Running) {
-        m_model->setState(MineModel::GameState::Paused);
+    switch (m_model->getState()) {
+
+    case GameState::Running:
+        m_model->setState(GameState::Paused);
         m_view->sidePanel()->pauseClock();
         m_view->mineBoard()->showPausedOverlay(true);
-        m_view->sidePanel()->setPauseButtonText("Resume");
-    }
-    else if (m_model->state() == MineModel::GameState::Paused) {
-        m_model->setState(MineModel::GameState::Running);
+        break;
+
+    case GameState::Paused:
+        m_model->setState(GameState::Running);
         m_view->sidePanel()->resumeClock();
         m_view->mineBoard()->showPausedOverlay(false);
-        m_view->sidePanel()->setPauseButtonText("Pause");
+        break;
+
+    case GameState::Finished:
+        m_view->showSelectScreen();
+        m_view->mineBoard()->showPausedOverlay(false);
+        break;
+
+    default:
+        break;
+    }
+}
+
+
+void MineController::onGameStateChanged(GameState state)
+{
+    auto* side = m_view->sidePanel();
+
+    switch (state) {
+    case GameState::Running:
+        side->setPauseButtonText("Pause");
+        side->setPauseEnabled(true);
+        break;
+
+    case GameState::Paused:
+        side->setPauseButtonText("Resume");
+        side->setPauseEnabled(true);
+        break;
+
+    case GameState::Finished:
+        side->setPauseButtonText("Change Difficulty");
+        side->setPauseEnabled(true);
+        break;
+
+    case GameState::NotStarted:
+        side->setPauseButtonText("Pause");
+        side->setPauseEnabled(false);
+        break;
     }
 }

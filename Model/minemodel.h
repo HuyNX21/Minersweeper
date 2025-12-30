@@ -7,6 +7,8 @@
 #include <QVector>
 #include <QPoint>
 
+#include "gamestate.h"
+
 class BoardModel;
 
 class MineModel : public QObject
@@ -14,13 +16,7 @@ class MineModel : public QObject
     Q_OBJECT
 
 public:
-    enum class GameState {
-        NotStarted,
-        Running,
-        Paused,
-        Finished
-    };
-    Q_ENUM(GameState)
+    GameState state() const;
 
 public:
     explicit MineModel(QObject* parent = nullptr);
@@ -32,7 +28,7 @@ public:
     // Người chơi click 1 ô
     void openCell(int row, int col);
 
-    GameState state() const;
+    GameState getState() const;
     void setState(GameState);
 
 signals:
@@ -42,6 +38,7 @@ signals:
     void gameOver(bool win);
 
     void minesRevealed(int rowMineTriggered, int colMineTriggered, const QVector<QPoint>& mines);
+    void stateChanged(GameState state);
 
 private:
     void startGame(int safeRow, int safeCol);
