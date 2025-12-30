@@ -74,3 +74,18 @@ void MineModel::openCell(int row, int col)
         emit gameOver(true);
     }
 }
+
+void MineModel::toggleFlag(int row, int col)
+{
+    if (m_state == GameState::Finished ||
+        m_state == GameState::Paused)
+        return;
+
+    if (m_board->isOpened(row, col))
+        return;
+
+    bool flagged = m_board->toggleFlag(row, col);
+
+    emit flagChanged(row, col, flagged);
+    emit flagCountChanged(m_board->flagCount(), m_mineCount);
+}

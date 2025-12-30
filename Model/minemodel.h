@@ -30,6 +30,7 @@ public:
 
     GameState getState() const;
     void setState(GameState);
+    void toggleFlag(int row, int col);
 
 signals:
     // Thông báo cho Controller để update View
@@ -39,6 +40,9 @@ signals:
 
     void minesRevealed(int rowMineTriggered, int colMineTriggered, const QVector<QPoint>& mines);
     void stateChanged(GameState state);
+
+    void flagChanged(int row, int col, bool flagged);
+    void flagCountChanged(int used, int total);
 
 private:
     void startGame(int safeRow, int safeCol);

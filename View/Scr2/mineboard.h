@@ -28,9 +28,11 @@ public:
     void resetBoard();
 
     void showPausedOverlay(bool show);
+    void setFlag(int row, int col, bool flagged);
 
 signals:
     void cellClicked(int row, int col);
+    void cellRightClicked(int row, int col);
 
 protected:
     void resizeEvent(QResizeEvent* event) override;

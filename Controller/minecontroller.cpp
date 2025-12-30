@@ -34,6 +34,15 @@ MineController::MineController(MineView* view, MineModel* model, QObject* parent
 
     connect(m_model, &MineModel::stateChanged,
             this,    &MineController::onGameStateChanged);
+
+    connect(m_view->mineBoard(), &MineBoard::cellRightClicked,
+            this, &MineController::onCellRightClicked);
+
+    connect(m_model, &MineModel::flagChanged,
+            this, &MineController::onFlagChanged);
+
+    connect(m_model, &MineModel::flagCountChanged,
+            this, &MineController::onFlagCountChanged);
 }
 
 void MineController::onModeSelected(int size, int mines)
@@ -45,6 +54,7 @@ void MineController::onModeSelected(int size, int mines)
     m_view->sidePanel()->resetClock();
     m_view->sidePanel()->setPauseButtonText("Pause");
     m_view->sidePanel()->setPauseEnabled(false);
+    m_view->sidePanel()->resetFlagCount(mines);
     m_view->showBoardScreen();
 }
 
@@ -124,7 +134,6 @@ void MineController::onPauseRequested()
     }
 }
 
-
 void MineController::onGameStateChanged(GameState state)
 {
     auto* side = m_view->sidePanel();
@@ -150,4 +159,19 @@ void MineController::onGameStateChanged(GameState state)
         side->setPauseEnabled(false);
         break;
     }
+}
+
+void MineController::onCellRightClicked(int row, int col)
+{
+    m_model->toggleFlag(row, col);
+}
+
+void MineController::onFlagChanged(int row, int col, bool flagged)
+{
+    m_view->mineBoard()->setFlag(row, col, flagged);
+}
+
+void MineController::onFlagCountChanged(int used, int total)
+{
+    m_view->sidePanel()->setFlagCount(used, total);
 }

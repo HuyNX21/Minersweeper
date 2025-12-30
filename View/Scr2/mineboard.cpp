@@ -1,4 +1,5 @@
 #include "mineboard.h"
+#include "../../Model/CellButton.h"
 
 #include <QGridLayout>
 #include <QPushButton>
@@ -116,16 +117,22 @@ void MineBoard::rebuildBoard()
         m_buttons[r].resize(m_boardSize);
 
         for (int c = 0; c < m_boardSize; ++c) {
-            auto* btn = new QPushButton(this);
+            //auto* btn = new QPushButton(this);
+            auto* btn = new CellButton(this);
 
             btn->setSizePolicy(QSizePolicy::Ignored,
                                QSizePolicy::Ignored);
 
             btn->setProperty("cellValue", QVariant());
 
-            connect(btn, &QPushButton::clicked,
+            connect(btn, &CellButton::leftClicked,
                     this, [this, r, c]() {
                         emit cellClicked(r, c);
+                    });
+
+            connect(btn, &CellButton::rightClicked,
+                    this, [this, r, c]() {
+                        emit cellRightClicked(r, c);
                     });
 
             m_grid->addWidget(btn, r, c);
@@ -141,7 +148,9 @@ void MineBoard::openCell(int row, int col, int value)
         return;
 
     QPushButton* btn = m_buttons[row][col];
-    if (!btn || !btn->isEnabled())
+
+    auto* cell = qobject_cast<CellButton*>(btn);
+    if (cell && cell->isFlagged())
         return;
 
     // Set state
@@ -237,6 +246,23 @@ void MineBoard::showPausedOverlay(bool show)
     m_pauseOverlay->raise(); // đảm bảo nằm trên cùng
 }
 
+void MineBoard::setFlag(int row, int col, bool flagged)
+{
+    auto* btn = qobject_cast<CellButton*>(m_buttons[row][col]);
+    if (!btn)
+        return;
+
+    btn->setFlagged(flagged);
+
+    if (flagged) {
+        btn->setText("🏴");
+    } else {
+        btn->setText("");
+    }
+
+    btn->style()->unpolish(btn);
+    btn->style()->polish(btn);
+}
 
 // ===== Qt layout contract =====
 

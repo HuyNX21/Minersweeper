@@ -20,6 +20,8 @@ public:
 
     void setPauseButtonText(const QString& text);
     void setPauseEnabled(bool enabled);
+    void setFlagCount(int used, int total);
+    void resetFlagCount(int total);
 
 signals:
     void backRequested();
@@ -31,6 +33,7 @@ private:
     QPushButton* m_pauseBtn;
 
     QLabel* m_flagLabel;
+    QLabel* m_flagCountLabel;
     QLabel* m_clockIcon;
     QLabel* m_timeLabel;
 

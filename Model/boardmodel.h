@@ -31,6 +31,12 @@ public:
     // Kiểm tra thắng
     bool checkWin() const;
 
+    bool isOpened(int row, int col) const;
+    bool isFlagged(int row, int col) const;
+    // Flag
+    bool toggleFlag(int row, int col);   // return trạng thái flag sau khi toggle
+    int  flagCount() const;
+
     QVector<QPoint> allMines() const;
 
 private:

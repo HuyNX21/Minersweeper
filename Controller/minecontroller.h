@@ -29,6 +29,10 @@ private slots:
     void onPauseRequested();
     void onGameStateChanged(GameState);
 
+    void onCellRightClicked(int , int);
+    void onFlagChanged(int, int, bool);
+    void onFlagCountChanged(int , int);
+
 private:
     MineView*  m_view;
     MineModel* m_model;

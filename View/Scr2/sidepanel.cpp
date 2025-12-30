@@ -17,6 +17,11 @@ SidePanel::SidePanel(QWidget* parent)
     m_flagLabel->setAlignment(Qt::AlignCenter);
     m_flagLabel->setStyleSheet("font-size: 28px;");
 
+    // ===== FLAG COUNT =====
+    m_flagCountLabel = new QLabel("0 / 0", this);
+    m_flagCountLabel->setAlignment(Qt::AlignCenter);
+    m_flagCountLabel->setStyleSheet("font-size: 20px;");
+
     // ===== CLOCK ICON =====
     m_clockIcon = new QLabel("🕐", this);
     m_clockIcon->setAlignment(Qt::AlignCenter);
@@ -28,6 +33,7 @@ SidePanel::SidePanel(QWidget* parent)
     m_timeLabel->setStyleSheet("font-size: 20px;");
 
     layout->addWidget(m_flagLabel);
+    layout->addWidget(m_flagCountLabel);
     layout->addSpacing(8);
     layout->addWidget(m_clockIcon);
     layout->addWidget(m_timeLabel);
@@ -101,3 +107,16 @@ void SidePanel::resetClock()
     m_timeLabel->setText("00:00");
 }
 
+void SidePanel::resetFlagCount(int total)
+{
+    m_flagCountLabel->setText(
+        QString("0 / %1").arg(total)
+        );
+}
+
+void SidePanel::setFlagCount(int used, int total)
+{
+    m_flagCountLabel->setText(
+        QString("%1 / %2").arg(used).arg(total)
+        );
+}

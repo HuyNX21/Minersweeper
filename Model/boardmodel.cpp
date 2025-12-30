@@ -68,6 +68,7 @@ bool BoardModel::openCell(int row, int col, QVector<QPoint>& openedCells)
         return false;
 
     Cell& start = m_cells[row][col];
+
     if (start.opened || start.flagged)
         return false;
 
@@ -153,4 +154,46 @@ QVector<QPoint> BoardModel::allMines() const
         }
     }
     return result;
+}
+
+bool BoardModel::isOpened(int row, int col) const
+{
+    if (!inBounds(row, col))
+        return false;
+
+    return m_cells[row][col].opened;
+}
+
+bool BoardModel::isFlagged(int row, int col) const
+{
+    if (!inBounds(row, col))
+        return false;
+
+    return m_cells[row][col].flagged;
+}
+
+bool BoardModel::toggleFlag(int row, int col)
+{
+    if (!inBounds(row, col))
+        return false;
+
+    Cell& cell = m_cells[row][col];
+
+    if (cell.opened)
+        return cell.flagged;
+
+    cell.flagged = !cell.flagged;
+    return cell.flagged;
+}
+
+int BoardModel::flagCount() const
+{
+    int count = 0;
+    for (const auto& row : m_cells) {
+        for (const Cell& cell : row) {
+            if (cell.flagged)
+                ++count;
+        }
+    }
+    return count;
 }
