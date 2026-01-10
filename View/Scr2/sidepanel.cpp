@@ -75,7 +75,7 @@ SidePanel::SidePanel(QWidget* parent)
     });
 }
 
-void SidePanel::showConfirmNewGameDialog()
+bool SidePanel::showConfirmNewGameDialog()
 {
     QMessageBox msgBox(this);
     msgBox.setWindowTitle("Start New Game");
@@ -95,9 +95,11 @@ void SidePanel::showConfirmNewGameDialog()
     msgBox.exec();
 
     if (msgBox.clickedButton() == newBtn) {
-        //startNewGame();
         qDebug() << "START NEW GAME";
+        return true;
     }
+
+    return false;
 }
 
 void SidePanel::setPauseButtonText(const QString& text)

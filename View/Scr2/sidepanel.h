@@ -26,7 +26,7 @@ public:
     void setFlagCount(int used, int total);
     void resetFlagCount(int total);
 
-    void showConfirmNewGameDialog();
+    bool showConfirmNewGameDialog();
 
 signals:
     void backRequested();
