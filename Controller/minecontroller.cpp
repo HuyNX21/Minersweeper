@@ -43,6 +43,9 @@ MineController::MineController(MineView* view, MineModel* model, QObject* parent
 
     connect(m_model, &MineModel::flagCountChanged,
             this, &MineController::onFlagCountChanged);
+
+    connect(m_view->sidePanel(), &SidePanel::startOverRequest,
+            this, &MineController::onShowConfirmNewGameDialog);
 }
 
 void MineController::onModeSelected(int size, int mines)
@@ -54,6 +57,7 @@ void MineController::onModeSelected(int size, int mines)
     m_view->sidePanel()->resetClock();
     m_view->sidePanel()->setPauseButtonText("Pause");
     m_view->sidePanel()->setPauseEnabled(false);
+    m_view->sidePanel()->setStartOverEnabled(false);
     m_view->sidePanel()->resetFlagCount(mines);
     m_view->showBoardScreen();
 }
@@ -70,6 +74,7 @@ void MineController::onCellClicked(int row, int col)
     if (m_model->getState() == GameState::NotStarted) {
         m_view->sidePanel()->startClock();
         m_view->sidePanel()->setPauseEnabled(true);
+        m_view->sidePanel()->setStartOverEnabled(true);
     }
 
     if (m_model->getState() == GameState::Paused)
@@ -132,6 +137,11 @@ void MineController::onPauseRequested()
     default:
         break;
     }
+}
+
+void MineController::onShowConfirmNewGameDialog()
+{
+    m_view->sidePanel()->showConfirmNewGameDialog();
 }
 
 void MineController::onGameStateChanged(GameState state)

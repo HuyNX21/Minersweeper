@@ -13,6 +13,7 @@ public:
 
     // UI API cho Controller / MainView
     void setBoardSize(int size);
+    void showConfirmNewGameDialog();
     MineBoard* mineBoard() const;
     SidePanel* sidePanel() const;
 

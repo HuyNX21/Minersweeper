@@ -43,21 +43,24 @@ SidePanel::SidePanel(QWidget* parent)
     // ===== BUTTONS =====
     const int sizeButton = 75;
 
-    b1          = new QPushButton("x", this);
-    m_btnBack   = new QPushButton("Back", this);
-    m_pauseBtn  = new QPushButton("Pause", this);
+    m_btnStartOver          = new QPushButton("Start Over", this);
+    m_btnBack               = new QPushButton("Change Diffculty", this);
+    m_btnPause              = new QPushButton("Pause", this);
 
-    for (auto* b : {b1, m_btnBack, m_pauseBtn}) {
+    for (auto* b : {m_btnStartOver, m_btnBack, m_btnPause}) {
         b->setMinimumSize(sizeButton, sizeButton);
         b->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         layout->addWidget(b);
     }
 
-    connect(m_btnBack,  &QPushButton::clicked,
-            this,       &SidePanel::backRequested);
+    connect(m_btnStartOver, &QPushButton::clicked,
+            this,           &SidePanel::startOverRequest);
 
-    connect(m_pauseBtn, &QPushButton::clicked,
-            this,       &SidePanel::pauseRequested);
+    connect(m_btnBack,      &QPushButton::clicked,
+            this,           &SidePanel::backRequested);
+
+    connect(m_btnPause,     &QPushButton::clicked,
+            this,           &SidePanel::pauseRequested);
 
     // ===== TIMER =====
     connect(&m_timer, &QTimer::timeout, this, [this]() {
@@ -72,14 +75,44 @@ SidePanel::SidePanel(QWidget* parent)
     });
 }
 
+void SidePanel::showConfirmNewGameDialog()
+{
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle("Start New Game");
+    msgBox.setText("Do you want to start a new game?");
+    msgBox.setInformativeText(
+        "If you start a new game, your current progress will be lost."
+        );
+    msgBox.setIcon(QMessageBox::Question);
+
+    QPushButton* keepBtn =
+        msgBox.addButton("Keep Current Game", QMessageBox::RejectRole);
+    QPushButton* newBtn =
+        msgBox.addButton("Start New Game", QMessageBox::AcceptRole);
+
+    msgBox.setDefaultButton(keepBtn);
+
+    msgBox.exec();
+
+    if (msgBox.clickedButton() == newBtn) {
+        //startNewGame();
+        qDebug() << "START NEW GAME";
+    }
+}
+
 void SidePanel::setPauseButtonText(const QString& text)
 {
-    m_pauseBtn->setText(text);
+    m_btnPause->setText(text);
 }
 
 void SidePanel::setPauseEnabled(bool enabled)
 {
-    m_pauseBtn->setEnabled(enabled);
+    m_btnPause->setEnabled(enabled);
+}
+
+void SidePanel::setStartOverEnabled(bool enabled)
+{
+    m_btnStartOver->setEnabled(enabled);
 }
 
 void SidePanel::startClock()
@@ -107,10 +140,10 @@ void SidePanel::resetClock()
     m_timeLabel->setText("00:00");
 }
 
-void SidePanel::resetFlagCount(int total)
+void SidePanel::resetFlagCount(int mines)
 {
     m_flagCountLabel->setText(
-        QString("0 / %1").arg(total)
+        QString("0 / %1").arg(mines)
         );
 }
 

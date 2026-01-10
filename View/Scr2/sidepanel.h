@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QTimer>
 #include <QLabel>
+#include <QMessageBox>
+#include <QDebug>
 
 class QPushButton;
 
@@ -20,17 +22,21 @@ public:
 
     void setPauseButtonText(const QString& text);
     void setPauseEnabled(bool enabled);
+    void setStartOverEnabled(bool enabled);
     void setFlagCount(int used, int total);
     void resetFlagCount(int total);
+
+    void showConfirmNewGameDialog();
 
 signals:
     void backRequested();
     void pauseRequested();
+    void startOverRequest();
 
 private:
-    QPushButton* b1;
+    QPushButton* m_btnStartOver;
     QPushButton* m_btnBack;
-    QPushButton* m_pauseBtn;
+    QPushButton* m_btnPause;
 
     QLabel* m_flagLabel;
     QLabel* m_flagCountLabel;

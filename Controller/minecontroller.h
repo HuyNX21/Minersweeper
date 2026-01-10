@@ -33,6 +33,8 @@ private slots:
     void onFlagChanged(int, int, bool);
     void onFlagCountChanged(int , int);
 
+    void onShowConfirmNewGameDialog();
+
 private:
     MineView*  m_view;
     MineModel* m_model;

@@ -47,6 +47,7 @@ else()
             Model/boardmodel.cpp Model/boardmodel.h Model/minemodel.cpp Model/minemodel.h
             Model/gamestate.h
             Model/CellButton.h
+            Doc/ClassDiagram.drawio Doc/ClassDiagram.png
         )
     endif()
 endif()

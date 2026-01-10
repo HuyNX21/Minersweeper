@@ -117,7 +117,7 @@ void MineBoard::rebuildBoard()
         m_buttons[r].resize(m_boardSize);
 
         for (int c = 0; c < m_boardSize; ++c) {
-            //auto* btn = new QPushButton(this);
+
             auto* btn = new CellButton(this);
 
             btn->setSizePolicy(QSizePolicy::Ignored,
