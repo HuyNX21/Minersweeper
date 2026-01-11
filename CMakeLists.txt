@@ -14,8 +14,8 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
         main.cpp
-        mainwindow.cpp
-        mainwindow.h
+
+
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -37,6 +37,12 @@ else()
     else()
         add_executable(Minersweeper
             ${PROJECT_SOURCES}
+
+            View/MineView.cpp View/MineView.h
+            View/Scr1/BoardSelect.cpp View/Scr1/BoardSelect.h View/Scr1/ModeSelectWidget.cpp View/Scr1/ModeSelectWidget.h
+            View/Scr2/CentralWidget.cpp View/Scr2/CentralWidget.h
+            View/Scr2/MineBoard.h View/Scr2/MineBoard.cpp
+            View/Scr2/SidePanel.h View/Scr2/SidePanel.cpp
         )
     endif()
 endif()
