@@ -50,9 +50,9 @@ public:
 
 signals:
     /**
-     * @brief Emitted when the user requests to go back
+     * @brief Emitted when the user requests to go change difficulty
      */
-    void backRequested();
+    void changeDifficultyRequested();
 
 private:
     MineBoard* m_board; ///< Mine board widget

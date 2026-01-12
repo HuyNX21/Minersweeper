@@ -17,8 +17,8 @@ CentralWidget::CentralWidget(QWidget* parent)
     m_side = new SidePanel(this);
 
     // Forward intent
-    connect(m_side, &SidePanel::backRequested,
-            this,   &CentralWidget::backRequested);
+    connect(m_side, &SidePanel::changeDifficultyRequested,
+            this,   &CentralWidget::changeDifficultyRequested);
 
     // ===== Assemble =====
     mainLayout->addWidget(m_board, 1);

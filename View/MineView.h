@@ -71,7 +71,7 @@ signals:
      * @brief Emitted when the user requests to return
      *        to the mode selection screen.
      */
-    void backRequested();
+    void changeDifficultyRequested();
 
 private:
     QStackedWidget*    m_stack;        ///< Manages screen switching

@@ -21,8 +21,8 @@ MineView::MineView(QWidget* parent)
     connect(m_selectScreen, &ModeSelectWidget::modeSelected,
             this,           &MineView::modeSelected);
 
-    connect(m_boardScreen, &CentralWidget::backRequested,
-            this,          &MineView::backRequested);
+    connect(m_boardScreen, &CentralWidget::changeDifficultyRequested,
+            this,          &MineView::changeDifficultyRequested);
 }
 
 void MineView::showSelectScreen()

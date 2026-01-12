@@ -39,9 +39,9 @@ private slots:
     void onModeSelected(int size, int mines);
 
     /**
-     * @brief Handles back navigation request
+     * @brief Handles Change Difficulty navigation request
      */
-    void onBackRequested();
+    void onChangeDifficultyRequested();
 
     /**
      * @brief Handles a cell left-click action
@@ -108,13 +108,15 @@ private slots:
     void onFlagCountChanged(int used, int total);
 
     /**
-     * @brief Shows the new game confirmation dialog
+     * @brief Handles Start Over requests
      */
-    void onShowConfirmNewGameDialog();
+    void onStartOverRequested();
 
 private:
     MineView*  m_view;   ///< View layer
     MineModel* m_model;  ///< Model layer
+    int m_sizeOld;       ///< Size current mode
+    int m_minesOld;      ///< Mines current mode
 };
 
 #endif // MINECONTROLLER_H

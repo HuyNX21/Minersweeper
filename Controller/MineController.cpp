@@ -13,11 +13,20 @@ MineController::MineController(MineView* view, MineModel* model, QObject* parent
     connect(m_view, &MineView::modeSelected,
             this,   &MineController::onModeSelected);
 
-    connect(m_view, &MineView::backRequested,
-            this,   &MineController::onBackRequested);
-
     connect(m_view->mineBoard(), &MineBoard::cellClicked,
             this, &MineController::onCellClicked);
+
+    connect(m_view->mineBoard(), &MineBoard::cellRightClicked,
+            this, &MineController::onCellRightClicked);
+
+    connect(m_view->sidePanel(), &SidePanel::startOverRequest,
+            this, &MineController::onStartOverRequested);
+
+    connect(m_view, &MineView::changeDifficultyRequested,
+            this,   &MineController::onChangeDifficultyRequested);
+
+    connect(m_view->sidePanel(), &SidePanel::pauseRequested,
+            this, &MineController::onPauseRequested);
 
     // ===== Model → Controller =====
     connect(m_model, &MineModel::cellOpened,
@@ -29,14 +38,8 @@ MineController::MineController(MineView* view, MineModel* model, QObject* parent
     connect(m_model, &MineModel::minesRevealed,
             this,    &MineController::onMinesRevealed);
 
-    connect(m_view->sidePanel(), &SidePanel::pauseRequested,
-            this, &MineController::onPauseRequested);
-
     connect(m_model, &MineModel::stateChanged,
             this,    &MineController::onGameStateChanged);
-
-    connect(m_view->mineBoard(), &MineBoard::cellRightClicked,
-            this, &MineController::onCellRightClicked);
 
     connect(m_model, &MineModel::flagChanged,
             this, &MineController::onFlagChanged);
@@ -44,12 +47,12 @@ MineController::MineController(MineView* view, MineModel* model, QObject* parent
     connect(m_model, &MineModel::flagCountChanged,
             this, &MineController::onFlagCountChanged);
 
-    connect(m_view->sidePanel(), &SidePanel::startOverRequest,
-            this, &MineController::onShowConfirmNewGameDialog);
 }
 
 void MineController::onModeSelected(int size, int mines)
 {
+    m_sizeOld = size;
+    m_minesOld = mines;
     m_model->setup(size, size, mines);
 
     m_view->setBoardSize(size);
@@ -63,10 +66,26 @@ void MineController::onModeSelected(int size, int mines)
 }
 
 
-void MineController::onBackRequested()
+void MineController::onChangeDifficultyRequested()
 {
-    m_view->showSelectScreen();
-    m_view->mineBoard()->showPausedOverlay(false);
+    if (m_model->getState() == GameState::Running || m_model->getState() == GameState::Paused)
+    {
+        if(m_view->sidePanel()->showConfirmNewGameDialog())
+        {
+            m_view->showSelectScreen();
+
+            if (m_model->getState() == GameState::Paused)
+                m_view->mineBoard()->showPausedOverlay(false);
+        }
+    }
+    else if (m_model->getState() == GameState::NotStarted)
+    {
+        m_view->showSelectScreen();
+    }
+    else
+    {
+        //GameState::Finished
+    }
 }
 
 void MineController::onCellClicked(int row, int col)
@@ -139,9 +158,24 @@ void MineController::onPauseRequested()
     }
 }
 
-void MineController::onShowConfirmNewGameDialog()
+void MineController::onStartOverRequested()
 {
-    m_view->sidePanel()->showConfirmNewGameDialog();
+    if(m_model->getState() == GameState::Running || m_model->getState() == GameState::Paused)
+    {
+        if(m_view->sidePanel()->showConfirmNewGameDialog())
+        {
+            onModeSelected(m_sizeOld, m_minesOld);
+
+            if(m_model->getState() == GameState::Paused)
+            {
+                m_view->mineBoard()->showPausedOverlay(false);
+            }
+        }
+    }
+    else if(m_model->getState() == GameState::Finished)
+    {
+
+    }
 }
 
 void MineController::onGameStateChanged(GameState state)

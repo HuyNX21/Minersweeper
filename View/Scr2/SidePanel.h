@@ -83,14 +83,15 @@ public:
 
     /**
      * @brief Shows a confirmation dialog for starting a new game
+     * @return True if user start new game, false if user keep curent game
      */
-    void showConfirmNewGameDialog();
+    bool showConfirmNewGameDialog();
 
 signals:
     /**
-     * @brief Emitted when the user requests to go back
+     * @brief Emitted when the user requests to go Change Difficulty
      */
-    void backRequested();
+    void changeDifficultyRequested();
 
     /**
      * @brief Emitted when the user requests to pause or resume the game
@@ -103,17 +104,17 @@ signals:
     void startOverRequest();
 
 private:
-    QPushButton* m_btnStartOver; ///< Start-over button
-    QPushButton* m_btnBack;      ///< Back button
-    QPushButton* m_btnPause;     ///< Pause/resume button
+    QPushButton* m_btnStartOver;            ///< Start-over button
+    QPushButton* m_btnChangeDifficulty;     ///< Change Difficulty button
+    QPushButton* m_btnPause;                ///< Pause/resume button
 
-    QLabel* m_flagLabel;         ///< Flag icon label
-    QLabel* m_flagCountLabel;    ///< Flag counter label
-    QLabel* m_clockIcon;         ///< Clock icon label
-    QLabel* m_timeLabel;         ///< Elapsed time display
+    QLabel* m_flagLabel;                    ///< Flag icon label
+    QLabel* m_flagCountLabel;               ///< Flag counter label
+    QLabel* m_clockIcon;                    ///< Clock icon label
+    QLabel* m_timeLabel;                    ///< Elapsed time display
 
-    QTimer m_timer;              ///< Timer for tracking elapsed time
-    int    m_elapsedSec = 0;     ///< Elapsed time in seconds
+    QTimer m_timer;                         ///< Timer for tracking elapsed time
+    int    m_elapsedSec = 0;                ///< Elapsed time in seconds
 };
 
 #endif // SIDEPANEL_H

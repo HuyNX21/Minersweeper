@@ -42,23 +42,23 @@ SidePanel::SidePanel(QWidget* parent)
     const int sizeButton = 75;
 
     m_btnStartOver          = new QPushButton("Start Over", this);
-    m_btnBack               = new QPushButton("Change Diffculty", this);
+    m_btnChangeDifficulty   = new QPushButton("Change Diffculty", this);
     m_btnPause              = new QPushButton("Pause", this);
 
-    for (auto* b : {m_btnStartOver, m_btnBack, m_btnPause}) {
+    for (auto* b : {m_btnStartOver, m_btnChangeDifficulty, m_btnPause}) {
         b->setMinimumSize(sizeButton, sizeButton);
         b->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         layout->addWidget(b);
     }
 
-    connect(m_btnStartOver, &QPushButton::clicked,
-            this,           &SidePanel::startOverRequest);
+    connect(m_btnStartOver,             &QPushButton::clicked,
+            this,                       &SidePanel::startOverRequest);
 
-    connect(m_btnBack,      &QPushButton::clicked,
-            this,           &SidePanel::backRequested);
+    connect(m_btnChangeDifficulty,      &QPushButton::clicked,
+            this,                       &SidePanel::changeDifficultyRequested);
 
-    connect(m_btnPause,     &QPushButton::clicked,
-            this,           &SidePanel::pauseRequested);
+    connect(m_btnPause,                 &QPushButton::clicked,
+            this,                       &SidePanel::pauseRequested);
 
     // ===== TIMER =====
     connect(&m_timer, &QTimer::timeout, this, [this]() {
@@ -73,7 +73,7 @@ SidePanel::SidePanel(QWidget* parent)
     });
 }
 
-void SidePanel::showConfirmNewGameDialog()
+bool SidePanel::showConfirmNewGameDialog()
 {
     QMessageBox msgBox(this);
     msgBox.setWindowTitle("Start New Game");
@@ -93,9 +93,11 @@ void SidePanel::showConfirmNewGameDialog()
     msgBox.exec();
 
     if (msgBox.clickedButton() == newBtn) {
-        //startNewGame();
         qDebug() << "START NEW GAME";
+        return true;
     }
+
+    return false;
 }
 
 void SidePanel::setPauseButtonText(const QString& text)
