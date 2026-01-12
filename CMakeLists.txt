@@ -43,6 +43,10 @@ else()
             View/Scr2/CentralWidget.cpp View/Scr2/CentralWidget.h
             View/Scr2/MineBoard.h View/Scr2/MineBoard.cpp
             View/Scr2/SidePanel.h View/Scr2/SidePanel.cpp
+            Controller/MineController.cpp Controller/MineController.h
+            Model/BoardModel.cpp Model/BoardModel.h Model/MineModel.cpp Model/MineModel.h
+            Model/GameState.h
+            Model/CellButton.h
         )
     endif()
 endif()
