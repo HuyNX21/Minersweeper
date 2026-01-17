@@ -47,6 +47,8 @@ else()
             Model/BoardModel.cpp Model/BoardModel.h Model/MineModel.cpp Model/MineModel.h
             Model/GameState.h
             Model/CellButton.h
+            View/Scr2/BestTimesDialog.h View/Scr2/BestTimesDialog.cpp
+            Model/BestTimeEntry.h
         )
     endif()
 endif()

@@ -9,6 +9,7 @@ class ModeSelectWidget;
 class CentralWidget;
 class MineBoard;
 class SidePanel;
+class BestTimesDialog;
 
 /**
  * @brief Top-level view responsible for screen navigation.
@@ -43,6 +44,11 @@ public:
      * @param size Board dimension (e.g. 8, 16, 32).
      */
     void setBoardSize(int size);
+
+    /**
+     * @brief Displays best times dialog.
+     */
+    void showBestTimesRequested();
 
     /**
      * @brief Returns the game board instance.

@@ -49,3 +49,8 @@ SidePanel* MineView::sidePanel() const
 {
     return m_boardScreen->sidePanel();
 }
+
+void MineView::showBestTimesRequested()
+{
+    m_boardScreen->showBestTimesRequested();
+}

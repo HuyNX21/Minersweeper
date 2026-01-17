@@ -8,6 +8,7 @@
 
 class MineBoard;
 class SidePanel;
+class BestTimesDialog;
 
 /**
  * @class CentralWidget
@@ -39,6 +40,11 @@ public:
     void showConfirmNewGameDialog();
 
     /**
+     * @brief Show a dialog box displaying the best times of players who have won the match.
+     */
+    void showBestTimesRequested();
+
+    /**
      * @brief Returns the mine board widget
      */
     MineBoard* mineBoard() const;
@@ -47,6 +53,11 @@ public:
      * @brief Returns the side panel widget
      */
     SidePanel* sidePanel() const;
+
+    /**
+     * @brief Returns the best time dialog widget
+     */
+    BestTimesDialog* bestTimesDialog() const;
 
 signals:
     /**
@@ -57,6 +68,7 @@ signals:
 private:
     MineBoard* m_board; ///< Mine board widget
     SidePanel* m_side;  ///< Side panel widget
+    BestTimesDialog* m_bestTimesDialog;
 };
 
 #endif // CENTRALWIDGET_H

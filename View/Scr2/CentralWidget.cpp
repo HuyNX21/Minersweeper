@@ -1,6 +1,7 @@
 #include "CentralWidget.h"
 #include "MineBoard.h"
 #include "SidePanel.h"
+#include "BestTimesDialog.h"
 
 CentralWidget::CentralWidget(QWidget* parent)
     : QWidget(parent)
@@ -15,6 +16,9 @@ CentralWidget::CentralWidget(QWidget* parent)
 
     // ===== Right: Side panel =====
     m_side = new SidePanel(this);
+
+    // ===== Best Times Dialog =====
+    m_bestTimesDialog = new BestTimesDialog(this);
 
     // Forward intent
     connect(m_side, &SidePanel::changeDifficultyRequested,
@@ -38,4 +42,17 @@ MineBoard* CentralWidget::mineBoard() const
 SidePanel* CentralWidget::sidePanel() const
 {
     return m_side;
+}
+
+BestTimesDialog* CentralWidget::bestTimesDialog() const
+{
+    return m_bestTimesDialog;
+}
+
+void CentralWidget::showBestTimesRequested()
+{
+    if (!m_bestTimesDialog)
+        return;
+
+    m_bestTimesDialog->exec();   // MODAL
 }

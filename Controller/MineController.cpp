@@ -62,6 +62,7 @@ void MineController::onModeSelected(int size, int mines)
     m_view->sidePanel()->setPauseEnabled(false);
     m_view->sidePanel()->setStartOverButtonText("Start Over");
     m_view->sidePanel()->setStartOverEnabled(false);
+    m_view->sidePanel()->setChangeDifficultyButtonText("Change Difficulty");
     m_view->sidePanel()->resetFlagCount(mines);
     m_view->showBoardScreen();
 }
@@ -111,6 +112,7 @@ void MineController::onChangeDifficultyRequested()
     else
     {
         //GameState::Finished
+        m_view->showBestTimesRequested();
     }
 }
 
