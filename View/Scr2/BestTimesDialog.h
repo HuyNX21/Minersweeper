@@ -24,7 +24,7 @@ public:
 
     explicit BestTimesDialog(QWidget* parent = nullptr);
 
-    void setBestTimes(const QVector<BestTimeEntry>& times);
+    void showBestTimes(const QVector<BestTimeEntry>& times);
     void enterWinMode(const BestTimeEntry& newEntry);
 
 signals:

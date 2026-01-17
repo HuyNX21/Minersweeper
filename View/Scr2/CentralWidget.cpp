@@ -54,6 +54,12 @@ void CentralWidget::showBestTimesRequested(const QVector<BestTimeEntry>& entry)
     if (!m_bestTimesDialog)
         return;
 
-    m_bestTimesDialog->setBestTimes(entry);
+    m_bestTimesDialog->showBestTimes(entry);
     m_bestTimesDialog->exec();   // MODAL
+}
+
+void CentralWidget::showWinMode(const BestTimeEntry& entry)
+{
+    m_bestTimesDialog->enterWinMode(entry);
+    m_bestTimesDialog->exec();
 }

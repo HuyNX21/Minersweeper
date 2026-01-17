@@ -5,7 +5,8 @@ enum class GameState {
     NotStarted,
     Running,
     Paused,
-    Finished
+    Lose,
+    Win
 };
 
 #endif // GAMESTATE_H

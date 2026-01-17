@@ -9,6 +9,7 @@
 
 class MineView;
 class MineModel;
+class BestTimeEntry;
 
 /**
  * @class MineController
@@ -111,6 +112,8 @@ private slots:
      * @brief Handles Start Over requests
      */
     void onStartOverRequested();
+
+    void onBestTimeConfirmed(const BestTimeEntry& entry);
 
 private:
     MineView*  m_view;   ///< View layer

@@ -2,6 +2,7 @@
 #include "../View/mineview.h"
 #include "../View/Scr2/mineboard.h"
 #include "../View/Scr2/sidepanel.h"
+#include "../View/Scr2/BestTimesDialog.h"
 #include "../Model/MineModel.h"
 
 MineController::MineController(MineView* view, MineModel* model, QObject* parent)
@@ -27,6 +28,9 @@ MineController::MineController(MineView* view, MineModel* model, QObject* parent
 
     connect(m_view->sidePanel(), &SidePanel::pauseRequested,
             this, &MineController::onPauseRequested);
+
+    connect(m_view->bestTimesDialog(), &BestTimesDialog::entryConfirmed,
+            this, &MineController::onBestTimeConfirmed);
 
     // ===== Model → Controller =====
     connect(m_model, &MineModel::cellOpened,
@@ -84,7 +88,7 @@ void MineController::onStartOverRequested()
             }
         }
     }
-    else if(state == GameState::Finished)
+    else if(state == GameState::Win || state == GameState::Lose)
     {
         onModeSelected(m_sizeOld, m_minesOld);
     }
@@ -133,7 +137,12 @@ void MineController::onPauseRequested()
         m_view->mineBoard()->showPausedOverlay(false);
         break;
 
-    case GameState::Finished:
+    case GameState::Lose:
+        m_view->showSelectScreen();
+        m_view->mineBoard()->showPausedOverlay(false);
+        break;
+
+    case GameState::Win:
         m_view->showSelectScreen();
         m_view->mineBoard()->showPausedOverlay(false);
         break;
@@ -158,7 +167,15 @@ void MineController::onGameStateChanged(GameState state)
         side->setPauseEnabled(true);
         break;
 
-    case GameState::Finished:
+    case GameState::Lose:
+        side->setPauseButtonText("Change Difficulty");
+        side->setPauseEnabled(true);
+        side->setStartOverButtonText("Play Again");
+        side->setStartOverEnabled(true);
+        side->setChangeDifficultyButtonText("Best Times");
+        break;
+
+    case GameState::Win:
         side->setPauseButtonText("Change Difficulty");
         side->setPauseEnabled(true);
         side->setStartOverButtonText("Play Again");
@@ -189,7 +206,6 @@ void MineController::onCellClicked(int row, int col)
 
 void MineController::onCellOpened(int row, int col, int value)
 {
-    // value = số mìn xung quanh (0..8)
     m_view->mineBoard()->openCell(row, col, value);
 }
 
@@ -197,7 +213,21 @@ void MineController::onGameOver(bool win)
 {
     m_view->sidePanel()->pauseClock();
 
-    //m_view->showGameOverDialog(win);
+    if(win)
+    {
+        int finalTime = m_view->sidePanel()->getFinalTime();
+
+        BestTimeEntry entry;
+        entry.seconds    = finalTime;
+        entry.minefield  = m_model->getCurrentMinefield();
+
+        m_view->showWinMode(entry);
+    }
+}
+
+void MineController::onBestTimeConfirmed(const BestTimeEntry& entry)
+{
+    m_model->setBestTime(entry);
 }
 
 void MineController::onMinesRevealed(int rowMineTriggered, int colMineTriggered, const QVector<QPoint>& mines)

@@ -80,6 +80,13 @@ public:
      */
     const QVector<BestTimeEntry>& getEntries() const;
 
+    /**
+     * @brief Returns the current Mine field
+     */
+    QString getCurrentMinefield();
+
+    void setBestTime(const BestTimeEntry&);
+
 signals:
     /**
      * @brief Notifies that a cell has been opened

@@ -125,6 +125,11 @@ void SidePanel::setChangeDifficultyButtonText(const QString& text)
     m_btnChangeDifficulty->setText(text);
 }
 
+int SidePanel::getFinalTime()
+{
+    return m_elapsedSec;
+}
+
 void SidePanel::startClock()
 {
     m_elapsedSec = 0;

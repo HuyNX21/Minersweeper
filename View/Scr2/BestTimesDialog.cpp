@@ -68,7 +68,7 @@ static int parseTime(const QString& text)
     return minutes * 60 + seconds;
 }
 
-void BestTimesDialog::setBestTimes(const QVector<BestTimeEntry>& times)
+void BestTimesDialog::showBestTimes(const QVector<BestTimeEntry>& times)
 {
     m_table->setRowCount(0);
 

@@ -60,6 +60,8 @@ public:
      */
     BestTimesDialog* bestTimesDialog() const;
 
+    void showWinMode(const BestTimeEntry&);
+
 signals:
     /**
      * @brief Emitted when the user requests to go change difficulty

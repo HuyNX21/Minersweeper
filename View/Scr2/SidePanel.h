@@ -99,6 +99,12 @@ public:
      */
     bool showConfirmNewGameDialog();
 
+    /**
+     * @brief Get final time when user won
+     * @return Final time
+     */
+    int getFinalTime();
+
 signals:
     /**
      * @brief Emitted when the user requests to go Change Difficulty

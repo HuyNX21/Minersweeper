@@ -51,7 +51,17 @@ SidePanel* MineView::sidePanel() const
     return m_boardScreen->sidePanel();
 }
 
+BestTimesDialog* MineView::bestTimesDialog() const
+{
+    return m_boardScreen->bestTimesDialog();
+}
+
 void MineView::showBestTimesRequested(const QVector<BestTimeEntry>& entry)
 {
     m_boardScreen->showBestTimesRequested(entry);
+}
+
+void MineView::showWinMode(const BestTimeEntry& entry)
+{
+    m_boardScreen->showWinMode(entry);
 }

@@ -65,6 +65,15 @@ public:
      */
     SidePanel* sidePanel() const;
 
+    /**
+     * @brief Returns the Best Times Dialog
+     *
+     * Ownership remains with MineView.
+     */
+    BestTimesDialog* bestTimesDialog() const;
+
+    void showWinMode(const BestTimeEntry& entry);
+
 signals:
     /**
      * @brief Emitted when the user selects a game mode.

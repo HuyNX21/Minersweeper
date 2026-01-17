@@ -28,11 +28,6 @@ void MineModel::setup(int rows, int cols, int mineCount)
     m_state = GameState::NotStarted;
 }
 
-GameState MineModel::getState() const
-{
-    return m_state;
-}
-
 void MineModel::setState(GameState state)
 {
     if (m_state == state)
@@ -42,17 +37,22 @@ void MineModel::setState(GameState state)
     emit stateChanged(m_state);
 }
 
+GameState MineModel::getState() const
+{
+    return m_state;
+}
+
 void MineModel::startGame(int safeRow, int safeCol)
 {
     m_board->placeMines(m_mineCount, safeRow, safeCol);
     m_board->calculateNumbers();
 
-    m_state = GameState::Running;
+    setState(GameState::Running);
 }
 
 void MineModel::openCell(int row, int col)
 {
-    if (m_state == GameState::Finished)
+    if (m_state == GameState::Lose || m_state == GameState::Win)
         return;
 
     if (m_state == GameState::NotStarted) {
@@ -64,7 +64,7 @@ void MineModel::openCell(int row, int col)
 
     if (hitMine) {
         emit minesRevealed(row, col, m_board->allMines());
-        setState(GameState::Finished);
+        setState(GameState::Lose);
         emit gameOver(false);
         return;
     }
@@ -75,14 +75,22 @@ void MineModel::openCell(int row, int col)
     }
 
     if (m_board->checkWin()) {
-        m_state = GameState::Finished;
+        setState(GameState::Win);
         emit gameOver(true);
     }
 }
 
+QString MineModel::getCurrentMinefield()
+{
+    return QString("%1x%1 - %2 Mines")
+    .arg(m_rows)
+        .arg(m_mineCount);
+}
+
 void MineModel::toggleFlag(int row, int col)
 {
-    if (m_state == GameState::Finished ||
+    if (m_state == GameState::Lose ||
+        m_state == GameState::Win ||
         m_state == GameState::Paused)
         return;
 
@@ -98,4 +106,10 @@ void MineModel::toggleFlag(int row, int col)
 const QVector<BestTimeEntry>& MineModel::getEntries() const
 {
     return m_bestTimesStorage->entries();
+}
+
+void MineModel::setBestTime(const BestTimeEntry& entry)
+{
+    m_bestTimesStorage->addEntry(entry);
+    m_bestTimesStorage->save();
 }
