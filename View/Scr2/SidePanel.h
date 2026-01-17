@@ -69,6 +69,18 @@ public:
     void setStartOverEnabled(bool enabled);
 
     /**
+     * @brief Sets the text of the start over button
+     * @param text Button label
+     */
+    void setStartOverButtonText(const QString& text);
+
+    /**
+     * @brief Sets the text of the Change Difficulty button
+     * @param text Button label
+     */
+    void setChangeDifficultyButtonText(const QString& text);
+
+    /**
      * @brief Updates the flag counter display
      * @param used Number of flags used
      * @param total Total number of available flags

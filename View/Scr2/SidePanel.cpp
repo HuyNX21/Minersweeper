@@ -115,6 +115,16 @@ void SidePanel::setStartOverEnabled(bool enabled)
     m_btnStartOver->setEnabled(enabled);
 }
 
+void SidePanel::setStartOverButtonText(const QString& text)
+{
+    m_btnStartOver->setText(text);
+}
+
+void SidePanel::setChangeDifficultyButtonText(const QString& text)
+{
+    m_btnChangeDifficulty->setText(text);
+}
+
 void SidePanel::startClock()
 {
     m_elapsedSec = 0;

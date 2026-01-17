@@ -60,31 +60,114 @@ void MineController::onModeSelected(int size, int mines)
     m_view->sidePanel()->resetClock();
     m_view->sidePanel()->setPauseButtonText("Pause");
     m_view->sidePanel()->setPauseEnabled(false);
+    m_view->sidePanel()->setStartOverButtonText("Start Over");
     m_view->sidePanel()->setStartOverEnabled(false);
     m_view->sidePanel()->resetFlagCount(mines);
     m_view->showBoardScreen();
 }
 
+// Button Start Over - Play Again
+void MineController::onStartOverRequested()
+{
+    GameState state = m_model->getState();
 
+    if(state == GameState::Running || state == GameState::Paused)
+    {
+        if(m_view->sidePanel()->showConfirmNewGameDialog())
+        {
+            onModeSelected(m_sizeOld, m_minesOld);
+
+            if(state == GameState::Paused)
+            {
+                m_view->mineBoard()->showPausedOverlay(false);
+            }
+        }
+    }
+    else if(state == GameState::Finished)
+    {
+        onModeSelected(m_sizeOld, m_minesOld);
+    }
+}
+
+// Button Change Difficulty - Best Times
 void MineController::onChangeDifficultyRequested()
 {
-    if (m_model->getState() == GameState::Running || m_model->getState() == GameState::Paused)
+    GameState state = m_model->getState();
+
+    if (state == GameState::Running || state == GameState::Paused)
     {
         if(m_view->sidePanel()->showConfirmNewGameDialog())
         {
             m_view->showSelectScreen();
 
-            if (m_model->getState() == GameState::Paused)
+            if (state == GameState::Paused)
                 m_view->mineBoard()->showPausedOverlay(false);
         }
     }
-    else if (m_model->getState() == GameState::NotStarted)
+    else if (state == GameState::NotStarted)
     {
         m_view->showSelectScreen();
     }
     else
     {
         //GameState::Finished
+    }
+}
+
+// Button Pause/Resume - Change Difficulty
+void MineController::onPauseRequested()
+{
+    switch (m_model->getState()) {
+
+    case GameState::Running:
+        m_model->setState(GameState::Paused);
+        m_view->sidePanel()->pauseClock();
+        m_view->mineBoard()->showPausedOverlay(true);
+        break;
+
+    case GameState::Paused:
+        m_model->setState(GameState::Running);
+        m_view->sidePanel()->resumeClock();
+        m_view->mineBoard()->showPausedOverlay(false);
+        break;
+
+    case GameState::Finished:
+        m_view->showSelectScreen();
+        m_view->mineBoard()->showPausedOverlay(false);
+        break;
+
+    default:
+        break;
+    }
+}
+
+void MineController::onGameStateChanged(GameState state)
+{
+    auto* side = m_view->sidePanel();
+
+    switch (state) {
+    case GameState::Running:
+        side->setPauseButtonText("Pause");
+        side->setPauseEnabled(true);
+        break;
+
+    case GameState::Paused:
+        side->setPauseButtonText("Resume");
+        side->setPauseEnabled(true);
+        break;
+
+    case GameState::Finished:
+        side->setPauseButtonText("Change Difficulty");
+        side->setPauseEnabled(true);
+        side->setStartOverButtonText("Play Again");
+        side->setStartOverEnabled(true);
+        side->setChangeDifficultyButtonText("Best Times");
+        break;
+
+    case GameState::NotStarted:
+        side->setPauseButtonText("Pause");
+        side->setPauseEnabled(false);
+        break;
     }
 }
 
@@ -129,79 +212,6 @@ void MineController::onMinesRevealed(int rowMineTriggered, int colMineTriggered,
         {
             board->revealMine(p.x(), p.y(), false);
         }
-    }
-}
-
-void MineController::onPauseRequested()
-{
-    switch (m_model->getState()) {
-
-    case GameState::Running:
-        m_model->setState(GameState::Paused);
-        m_view->sidePanel()->pauseClock();
-        m_view->mineBoard()->showPausedOverlay(true);
-        break;
-
-    case GameState::Paused:
-        m_model->setState(GameState::Running);
-        m_view->sidePanel()->resumeClock();
-        m_view->mineBoard()->showPausedOverlay(false);
-        break;
-
-    case GameState::Finished:
-        m_view->showSelectScreen();
-        m_view->mineBoard()->showPausedOverlay(false);
-        break;
-
-    default:
-        break;
-    }
-}
-
-void MineController::onStartOverRequested()
-{
-    if(m_model->getState() == GameState::Running || m_model->getState() == GameState::Paused)
-    {
-        if(m_view->sidePanel()->showConfirmNewGameDialog())
-        {
-            onModeSelected(m_sizeOld, m_minesOld);
-
-            if(m_model->getState() == GameState::Paused)
-            {
-                m_view->mineBoard()->showPausedOverlay(false);
-            }
-        }
-    }
-    else if(m_model->getState() == GameState::Finished)
-    {
-
-    }
-}
-
-void MineController::onGameStateChanged(GameState state)
-{
-    auto* side = m_view->sidePanel();
-
-    switch (state) {
-    case GameState::Running:
-        side->setPauseButtonText("Pause");
-        side->setPauseEnabled(true);
-        break;
-
-    case GameState::Paused:
-        side->setPauseButtonText("Resume");
-        side->setPauseEnabled(true);
-        break;
-
-    case GameState::Finished:
-        side->setPauseButtonText("Change Difficulty");
-        side->setPauseEnabled(true);
-        break;
-
-    case GameState::NotStarted:
-        side->setPauseButtonText("Pause");
-        side->setPauseEnabled(false);
-        break;
     }
 }
 
