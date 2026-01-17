@@ -9,6 +9,7 @@
 class MineBoard;
 class SidePanel;
 class BestTimesDialog;
+class BestTimeEntry;
 
 /**
  * @class CentralWidget
@@ -42,7 +43,7 @@ public:
     /**
      * @brief Show a dialog box displaying the best times of players who have won the match.
      */
-    void showBestTimesRequested();
+    void showBestTimesRequested(const QVector<BestTimeEntry>&);
 
     /**
      * @brief Returns the mine board widget

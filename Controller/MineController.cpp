@@ -112,7 +112,7 @@ void MineController::onChangeDifficultyRequested()
     else
     {
         //GameState::Finished
-        m_view->showBestTimesRequested();
+        m_view->showBestTimesRequested(m_model->getEntries());
     }
 }
 

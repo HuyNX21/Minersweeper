@@ -10,6 +10,7 @@ class CentralWidget;
 class MineBoard;
 class SidePanel;
 class BestTimesDialog;
+class BestTimeEntry;
 
 /**
  * @brief Top-level view responsible for screen navigation.
@@ -48,7 +49,7 @@ public:
     /**
      * @brief Displays best times dialog.
      */
-    void showBestTimesRequested();
+    void showBestTimesRequested(const QVector<BestTimeEntry>&);
 
     /**
      * @brief Returns the game board instance.

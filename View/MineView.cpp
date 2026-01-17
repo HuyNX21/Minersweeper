@@ -1,6 +1,7 @@
 #include "mineview.h"
 #include "Scr1/modeselectwidget.h"
 #include "Scr2/centralwidget.h"
+#include "../Model/BestTimeEntry.h"
 
 MineView::MineView(QWidget* parent)
     : QMainWindow(parent)
@@ -50,7 +51,7 @@ SidePanel* MineView::sidePanel() const
     return m_boardScreen->sidePanel();
 }
 
-void MineView::showBestTimesRequested()
+void MineView::showBestTimesRequested(const QVector<BestTimeEntry>& entry)
 {
-    m_boardScreen->showBestTimesRequested();
+    m_boardScreen->showBestTimesRequested(entry);
 }

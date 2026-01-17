@@ -1,15 +1,19 @@
 #include "MineModel.h"
 #include "BoardModel.h"
+#include "BestTimeEntry.h"
+#include "BestTimesStorage.h"
 
 MineModel::MineModel(QObject* parent)
     : QObject(parent)
 {
     m_board = new BoardModel();
+    m_bestTimesStorage= new BestTimesStorage();
 }
 
 MineModel::~MineModel()
 {
     delete m_board;
+    delete m_bestTimesStorage;
 }
 
 void MineModel::setup(int rows, int cols, int mineCount)
@@ -19,6 +23,7 @@ void MineModel::setup(int rows, int cols, int mineCount)
     m_mineCount = mineCount;
 
     m_board->init(rows, cols);
+    m_bestTimesStorage->load();
 
     m_state = GameState::NotStarted;
 }
@@ -88,4 +93,9 @@ void MineModel::toggleFlag(int row, int col)
 
     emit flagChanged(row, col, flagged);
     emit flagCountChanged(m_board->flagCount(), m_mineCount);
+}
+
+const QVector<BestTimeEntry>& MineModel::getEntries() const
+{
+    return m_bestTimesStorage->entries();
 }

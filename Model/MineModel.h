@@ -10,6 +10,8 @@
 #include "GameState.h"
 
 class BoardModel;
+class BestTimesStorage;
+class BestTimeEntry;
 
 /**
  * @class MineModel
@@ -73,6 +75,11 @@ public:
      */
     void toggleFlag(int row, int col);
 
+    /**
+     * @brief Returns best times entry.
+     */
+    const QVector<BestTimeEntry>& getEntries() const;
+
 signals:
     /**
      * @brief Notifies that a cell has been opened
@@ -126,7 +133,8 @@ private:
     void startGame(int safeRow, int safeCol);
 
 private:
-    BoardModel* m_board = nullptr; ///< Underlying board data model
+    BoardModel* m_board = nullptr;                      ///< Underlying board data model
+    BestTimesStorage * m_bestTimesStorage = nullptr;    ///< Underlying best times data model
 
     int m_rows      = 0; ///< Number of board rows
     int m_cols      = 0; ///< Number of board columns

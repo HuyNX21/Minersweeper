@@ -5,8 +5,7 @@
 
 struct BestTimeEntry
 {
-    int rank;
-    int seconds;
+    int seconds = 0;
     QString minefield;
     QString playerName;
 };

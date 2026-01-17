@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <QHeaderView>
 #include <QPushButton>
+#include <QDebug>
 
 #include "../../Model/BestTimeEntry.h"
 

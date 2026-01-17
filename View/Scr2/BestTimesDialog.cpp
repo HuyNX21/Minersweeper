@@ -75,6 +75,13 @@ inline QString formatTime(int seconds)
 
 void BestTimesDialog::setBestTimes(const QVector<BestTimeEntry>& times)
 {
+    qDebug() << "times addr:" << &times;
+    qDebug() << "times size:" << times.size();
+    if (!m_table)
+        return;
+
+    m_table->clearContents();
+    int a = times.size();
     m_table->setRowCount(times.size());
 
     for (int i = 0; i < times.size(); ++i)
@@ -97,6 +104,7 @@ void BestTimesDialog::setBestTimes(const QVector<BestTimeEntry>& times)
         m_table->setItem(i, 3, playerItem);
     }
 }
+
 
 
 

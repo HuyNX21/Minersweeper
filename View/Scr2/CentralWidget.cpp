@@ -49,10 +49,11 @@ BestTimesDialog* CentralWidget::bestTimesDialog() const
     return m_bestTimesDialog;
 }
 
-void CentralWidget::showBestTimesRequested()
+void CentralWidget::showBestTimesRequested(const QVector<BestTimeEntry>& entry)
 {
     if (!m_bestTimesDialog)
         return;
 
+    m_bestTimesDialog->setBestTimes(entry);
     m_bestTimesDialog->exec();   // MODAL
 }

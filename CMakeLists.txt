@@ -49,6 +49,7 @@ else()
             Model/CellButton.h
             View/Scr2/BestTimesDialog.h View/Scr2/BestTimesDialog.cpp
             Model/BestTimeEntry.h
+            Model/BestTimesStorage.h Model/BestTimesStorage.cpp
         )
     endif()
 endif()
