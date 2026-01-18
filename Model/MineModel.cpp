@@ -80,11 +80,14 @@ void MineModel::openCell(int row, int col)
     }
 }
 
-QString MineModel::getCurrentMinefield()
+int MineModel::getCurrentSizeField()
 {
-    return QString("%1x%1 - %2 Mines")
-    .arg(m_rows)
-        .arg(m_mineCount);
+    return m_rows;
+}
+
+int MineModel::getCurrentMinesField()
+{
+    return m_mineCount;
 }
 
 void MineModel::toggleFlag(int row, int col)
@@ -111,5 +114,6 @@ const QVector<BestTimeEntry>& MineModel::getEntries() const
 void MineModel::setBestTime(const BestTimeEntry& entry)
 {
     m_bestTimesStorage->addEntry(entry);
+    m_bestTimesStorage->sortEntries();
     m_bestTimesStorage->save();
 }

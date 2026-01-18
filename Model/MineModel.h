@@ -80,10 +80,10 @@ public:
      */
     const QVector<BestTimeEntry>& getEntries() const;
 
-    /**
-     * @brief Returns the current Mine field
-     */
-    QString getCurrentMinefield();
+
+    int getCurrentSizeField();
+
+    int getCurrentMinesField();
 
     void setBestTime(const BestTimeEntry&);
 

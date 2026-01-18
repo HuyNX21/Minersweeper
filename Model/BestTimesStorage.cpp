@@ -1,99 +1,120 @@
 #include "BestTimesStorage.h"
-#include <QSettings>
-#include <algorithm>
-
-namespace
-{
-constexpr const char* GROUP_NAME = "BestTimes";
-}
 
 BestTimesStorage::BestTimesStorage()
 {
+    m_filePath =
+        QCoreApplication::applicationDirPath() + "/best_times.json";
 }
 
-void BestTimesStorage::load()
+bool BestTimesStorage::load()
 {
-    QSettings settings;
-    settings.beginGroup(GROUP_NAME);
+    QFile file(m_filePath);
+    if (!file.exists())
+        return false;
 
-    if (settings.childGroups().isEmpty() &&
-        settings.childKeys().isEmpty())
-    {
-        settings.endGroup();
-        return;
-    }
+    if (!file.open(QIODevice::ReadOnly))
+        return false;
+
+    const QJsonDocument doc =
+        QJsonDocument::fromJson(file.readAll());
+
+    if (!doc.isObject())
+        return false;
+
+    const QJsonObject root = doc.object();
+    const QJsonArray array =
+        root.value("best_times").toArray();
+
+    if (array.isEmpty())
+        return false;
 
     m_entries.clear();
+    m_entries.reserve(array.size());
 
-    int size = settings.beginReadArray("Entries");
-    for (int i = 0; i < size; ++i)
+    for (const QJsonValue& value : array)
     {
-        settings.setArrayIndex(i);
+        if (!value.isObject())
+            continue;
+
+        const QJsonObject obj = value.toObject();
 
         BestTimeEntry entry;
-        entry.seconds    = settings.value("seconds").toInt();
-        entry.minefield  = settings.value("minefield").toString();
-        entry.playerName = settings.value("player").toString();
+        entry.size       = obj.value("size").toInt();
+        entry.mines      = obj.value("mines").toInt();
+        entry.seconds    = obj.value("seconds").toInt();
+        entry.playerName = obj.value("player").toString();
+
+        if (entry.size <= 0 || entry.mines <= 0 || entry.seconds <= 0)
+            continue;
 
         m_entries.push_back(entry);
     }
 
-    settings.endArray();
-    settings.endGroup();
+    sortEntries();
 
-    sortAndTrim();
+    return !m_entries.isEmpty();
 }
 
-void BestTimesStorage::save() const
+
+bool BestTimesStorage::save() const
 {
-    QSettings settings;
-    settings.beginGroup(GROUP_NAME);
+    QJsonArray array;
 
-    settings.remove(""); // clear old data
-
-    settings.beginWriteArray("Entries");
-    for (int i = 0; i < m_entries.size(); ++i)
+    for (const BestTimeEntry& entry : m_entries)
     {
-        settings.setArrayIndex(i);
-        settings.setValue("seconds", m_entries[i].seconds);
-        settings.setValue("minefield", m_entries[i].minefield);
-        settings.setValue("player", m_entries[i].playerName);
-    }
-    settings.endArray();
+        QJsonObject obj;
+        obj["size"]    = entry.size;
+        obj["mines"]   = entry.mines;
+        obj["seconds"] = entry.seconds;
+        obj["player"]  = entry.playerName;
 
-    settings.endGroup();
+        array.append(obj);
+    }
+
+    QJsonObject root;
+    root["best_times"] = array;
+
+    QFile file(m_filePath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+        return false;
+
+    file.write(
+        QJsonDocument(root).toJson(QJsonDocument::Indented)
+        );
+
+    return true;
 }
 
+
+void BestTimesStorage::sortEntries()
+{
+    std::sort(m_entries.begin(), m_entries.end(),
+              [](const BestTimeEntry& a, const BestTimeEntry& b)
+              {
+                  if (a.size != b.size)
+                      return a.size > b.size;
+
+                  if (a.mines != b.mines)
+                      return a.mines > b.mines;
+
+                  if (a.seconds != b.seconds)
+                      return a.seconds < b.seconds;
+
+                  return false;
+              });
+}
 
 void BestTimesStorage::addEntry(const BestTimeEntry& entry)
 {
     m_entries.push_back(entry);
-    sortAndTrim();
-}
-
-const QVector<BestTimeEntry>& BestTimesStorage::entries() const
-{
-    return m_entries;
 }
 
 void BestTimesStorage::clear()
 {
     m_entries.clear();
-
-    QSettings settings;
-    settings.beginGroup(GROUP_NAME);
-    settings.remove("");
-    settings.endGroup();
 }
 
-void BestTimesStorage::sortAndTrim()
+const QVector<BestTimeEntry>& BestTimesStorage::entries() const
 {
-    std::sort(m_entries.begin(), m_entries.end(),
-              [](const BestTimeEntry& a, const BestTimeEntry& b)
-              {
-                  return a.seconds < b.seconds;
-              });
-
-    if (m_entries.size() > MaxEntries)
-        m_entries.resize(MaxEntries);
+    return m_entries;
 }

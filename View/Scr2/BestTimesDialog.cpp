@@ -73,6 +73,30 @@ static int parseTime(const QString& text)
     return minutes * 60 + seconds;
 }
 
+static void parseMinefield(
+    const QString& text,
+    int& outSize,
+    int& outMines
+    )
+{
+    // Format: "8x8 - 10 Mines"
+    const QRegularExpression re(
+        R"((\d+)\s*x\s*\d+\s*-\s*(\d+))",
+        QRegularExpression::CaseInsensitiveOption
+        );
+
+    const QRegularExpressionMatch match = re.match(text);
+    if (!match.hasMatch())
+    {
+        outSize  = 0;
+        outMines = 0;
+        return;
+    }
+
+    outSize  = match.captured(1).toInt();
+    outMines = match.captured(2).toInt();
+}
+
 void BestTimesDialog::showBestTimes(const QVector<BestTimeEntry>& times)
 {
     m_table->setRowCount(0);
@@ -85,7 +109,7 @@ void BestTimesDialog::showBestTimes(const QVector<BestTimeEntry>& times)
 
         auto* rankItem = new QTableWidgetItem(QString::number(row + 1));
         auto* timeItem = new QTableWidgetItem(formatTime(t.seconds));
-        auto* mineItem = new QTableWidgetItem(t.minefield);
+        auto* mineItem = new QTableWidgetItem(t.minefieldText());
         auto* playItem = new QTableWidgetItem(t.playerName);
 
         rankItem->setTextAlignment(Qt::AlignCenter);
@@ -114,7 +138,7 @@ void BestTimesDialog::enterWinMode(const BestTimeEntry& entry)
 
     auto* rankItem = new QTableWidgetItem(QString::number(row + 1));
     auto* timeItem = new QTableWidgetItem(formatTime(entry.seconds));
-    auto* mineItem = new QTableWidgetItem(entry.minefield);
+    auto* mineItem = new QTableWidgetItem(entry.minefieldText());
 
     rankItem->setTextAlignment(Qt::AlignCenter);
     timeItem->setTextAlignment(Qt::AlignCenter);
@@ -167,7 +191,10 @@ void BestTimesDialog::onDoneClicked()
 
     BestTimeEntry entry;
     entry.seconds    = parseTime(m_table->item(m_entryRow, 1)->text());
-    entry.minefield  = m_table->item(m_entryRow, 2)->text();
+    parseMinefield(m_table->item(m_entryRow, 2)->text(),
+        entry.size,
+        entry.mines
+        );
     entry.playerName = playerName;
 
     emit entryConfirmed(entry);

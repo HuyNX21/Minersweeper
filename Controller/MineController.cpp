@@ -219,7 +219,8 @@ void MineController::onGameOver(bool win)
 
         BestTimeEntry entry;
         entry.seconds    = finalTime;
-        entry.minefield  = m_model->getCurrentMinefield();
+        entry.size       = m_model->getCurrentSizeField();
+        entry.mines      = m_model->getCurrentMinesField();
 
         m_view->showWinMode(entry);
     }

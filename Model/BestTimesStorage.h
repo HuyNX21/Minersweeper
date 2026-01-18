@@ -5,6 +5,14 @@
 
 #include <QVector>
 #include <QString>
+#include <QFile>
+#include <QDir>
+#include <QStandardPaths>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QSettings>
+#include <QCoreApplication>
 #include "BestTimeEntry.h"
 
 class BestTimesStorage
@@ -12,20 +20,19 @@ class BestTimesStorage
 public:
     BestTimesStorage();
 
-    void load();
-    void save() const;
+    bool load();                // load từ file JSON
+    bool save() const;          // save ra file JSON
 
     void addEntry(const BestTimeEntry& entry);
-    const QVector<BestTimeEntry>& entries() const;
-
     void clear();
 
-private:
-    void sortAndTrim();
+    const QVector<BestTimeEntry>& entries() const;
+
+    void sortEntries();
 
 private:
+    QString m_filePath;
     QVector<BestTimeEntry> m_entries;
-    static constexpr int MaxEntries = 10;
 };
 
 
