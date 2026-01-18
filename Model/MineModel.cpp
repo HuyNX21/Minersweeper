@@ -100,6 +100,9 @@ void MineModel::toggleFlag(int row, int col)
     if (m_board->isOpened(row, col))
         return;
 
+    if(m_board->flagCount() + 1 > m_mineCount && !m_board->isFlagged(row, col))
+        return;
+
     bool flagged = m_board->toggleFlag(row, col);
 
     emit flagChanged(row, col, flagged);

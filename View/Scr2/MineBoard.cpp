@@ -79,7 +79,7 @@ MineBoard::MineBoard(QWidget* parent)
 
 void MineBoard::setBoardSize(int size)
 {
-    if (size <= 0 || size == m_boardSize)
+    if (size <= 0)
         return;
 
     m_boardSize = size;
@@ -114,6 +114,7 @@ void MineBoard::rebuildBoard()
                                QSizePolicy::Ignored);
 
             btn->setProperty("cellValue", QVariant());
+            btn->setFlagged(false);
 
             connect(btn, &CellButton::leftClicked,
                     this, [this, r, c]() {
