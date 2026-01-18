@@ -7,6 +7,9 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
+    QCoreApplication::setOrganizationName("HuyNX21");
+    QCoreApplication::setApplicationName("Minesweeper");
+
     MineView view;
     MineModel model;
     MineController controller(&view, &model);

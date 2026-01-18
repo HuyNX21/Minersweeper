@@ -64,8 +64,8 @@ void MineModel::openCell(int row, int col)
 
     if (hitMine) {
         emit minesRevealed(row, col, m_board->allMines());
-        setState(GameState::Lose);
-        emit gameOver(false);
+        setState(GameState::Win);
+        emit gameOver(true);
         return;
     }
 

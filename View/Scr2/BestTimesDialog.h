@@ -8,6 +8,7 @@
 #include <QHeaderView>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QRegularExpression>
 #include <QDebug>
 
 #include "../../Model/BestTimeEntry.h"

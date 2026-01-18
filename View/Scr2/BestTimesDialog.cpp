@@ -58,12 +58,17 @@ inline QString formatTime(int seconds)
 
 static int parseTime(const QString& text)
 {
-    const QStringList parts = text.split(':');
-    if (parts.size() != 2)
+    static const QRegularExpression re(
+        R"(^\s*(\d+)\s+minutes\s+(\d+)\s+seconds\s*$)",
+        QRegularExpression::CaseInsensitiveOption
+        );
+
+    const QRegularExpressionMatch match = re.match(text);
+    if (!match.hasMatch())
         return 0;
 
-    const int minutes = parts[0].toInt();
-    const int seconds = parts[1].toInt();
+    const int minutes = match.captured(1).toInt();
+    const int seconds = match.captured(2).toInt();
 
     return minutes * 60 + seconds;
 }
