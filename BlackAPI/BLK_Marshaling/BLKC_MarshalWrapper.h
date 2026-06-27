@@ -8,8 +8,9 @@
 #include "BLKC_MarshalParamaterWrapper.h"
 #include "BLKC_CallbackPointerContainer.h"
 
-// forward declare GameState
+// forward declare GameState	
 enum class GameState;
+struct BestTimeEntry;
 
 // #define BLK_MARSHALING_WRAPPER_DEBUG (1)
 #if defined(BLK_MARSHALING_WRAPPER_DEBUG)
@@ -180,6 +181,10 @@ class BLKC_MarshalWrapper
 		virtual void* marshal( unsigned char* buf, std::vector<PointCellOpened>& data, short* datasize, short num = 1 );
 
 		virtual void* marshal( unsigned char* buf, std::vector<std::pair<int,int>>& data, short* datasize, short num = 1 );
+
+		virtual void* marshal( unsigned char* buf, std::vector<BestTimeEntry>& data, short* datasize, short num = 1 );
+
+		virtual void* marshal( unsigned char* buf, BestTimeEntry& data, short* datasize, short num = 1 );
 
 		// ============================================================================================================
 		// =================================================== END ====================================================

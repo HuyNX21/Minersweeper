@@ -3,6 +3,7 @@
 #include "MineBoardGame.h"
 #include "SidePanel.h"
 #include "BoardSellectModeWidget.h"
+#include "BestTimesDialog.h"
 
 MineController* MineController::s_instance = nullptr;
 
@@ -49,6 +50,9 @@ MineController::MineController(MineView* view, QObject* parent)
 
     connect(m_view->sidePanel(), &SidePanel::pauseRequested,
             this, &MineController::onPauseRequested);
+
+    connect(m_view->bestTimesDialog(), &BestTimesDialog::entryConfirmed,
+            this, &MineController::onBestTimeConfirmed);
 
     // ===== Model -> Controller =====
 
@@ -121,7 +125,7 @@ void MineController::onChangeDifficultyRequested()
     else
     {
         //GameState::Finished
-        // m_view->showBestTimesRequested(m_model->getEntries());
+        m_view->showBestTimesRequested(Proxy_APIC_MineModel::newInstance()->getEntries());
     }
 }
 
@@ -269,6 +273,18 @@ void MineController::MCC_MineControllerObserver::obs_gameOver(bool win)
 
     if(win)
     {
+        int finalTime = MineController::getInstance()->m_view->sidePanel()->getFinalTime();
 
+        BestTimeEntry entry;
+        entry.seconds    = finalTime;
+        entry.size       = Proxy_APIC_MineModel::newInstance()->getCurrentSizeField();
+        entry.mines      = Proxy_APIC_MineModel::newInstance()->getCurrentMinesField();
+
+        MineController::getInstance()->m_view->showWinMode(entry);
     }
+}
+
+void MineController::onBestTimeConfirmed(const BestTimeEntry entry)
+{
+    Proxy_APIC_MineModel::newInstance()->setBestTime(entry);
 }

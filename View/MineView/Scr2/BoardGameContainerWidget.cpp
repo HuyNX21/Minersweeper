@@ -1,6 +1,10 @@
 #include "BoardGameContainerWidget.h"
 #include "MineBoardGame.h"
+#include "BestTimeEntry.h"
+#include "BestTimesDialog.h"
 #include "SidePanel.h"
+#include <QMetaObject>
+#include <QThread>
 
 BoardGameContainerWidget::BoardGameContainerWidget(QWidget* parent)
     : QWidget(parent)
@@ -14,6 +18,9 @@ BoardGameContainerWidget::BoardGameContainerWidget(QWidget* parent)
 
     // ===== Right: Side panel =====
     m_side = new SidePanel(this);
+
+    // ===== Best Times Dialog =====
+    m_bestTimesDialog = new BestTimesDialog(this);
 
     connect(m_side, &SidePanel::changeDifficultyRequested,
             this,   &BoardGameContainerWidget::changeDifficultyRequested);
@@ -36,4 +43,43 @@ MineBoardGame* BoardGameContainerWidget::mineBoard() const
 SidePanel* BoardGameContainerWidget::sidePanel() const
 {
     return m_side;
+}
+
+BestTimesDialog* BoardGameContainerWidget::bestTimesDialog() const
+{
+    return m_bestTimesDialog;
+}
+
+void BoardGameContainerWidget::showBestTimesRequested(const std::vector<BestTimeEntry> entry)
+{
+    if (QThread::currentThread() != thread())
+    {
+        QMetaObject::invokeMethod(this,
+            [this, entry]() { showBestTimesRequested(entry); },
+            Qt::QueuedConnection);
+        return;
+    }
+
+    if (!m_bestTimesDialog)
+        return;
+
+    m_bestTimesDialog->showBestTimes(entry);
+    m_bestTimesDialog->exec();
+}
+
+void BoardGameContainerWidget::showWinMode(const BestTimeEntry entry)
+{
+    if (QThread::currentThread() != thread())
+    {
+        QMetaObject::invokeMethod(this,
+            [this, entry]() { showWinMode(entry); },
+            Qt::QueuedConnection);
+        return;
+    }
+
+    if (!m_bestTimesDialog)
+        return;
+
+    m_bestTimesDialog->enterWinMode(entry);
+    m_bestTimesDialog->exec();
 }

@@ -7,11 +7,13 @@ LIBC_List<APIC_MineModelObserver>   MDLC_MineModel::m_pc_MineModelList;
 MDLC_MineModel::MDLC_MineModel()
 {
     m_mineSetting = new MineSetting();
+    m_bestTimesStorage= new BestTimesStorage();
 }
 
 MDLC_MineModel::~MDLC_MineModel()
 {
     delete m_mineSetting;
+    delete m_bestTimesStorage;
 }
 
 MDLC_MineModel* MDLC_MineModel::newInstance()
@@ -27,7 +29,7 @@ void MDLC_MineModel::setup(int rows, int cols, int mineCount)
     m_mineCount = mineCount;
 
     m_mineSetting->init(rows, cols);
-    // m_bestTimesStorage->load();
+    m_bestTimesStorage->load();
 
     m_state = GameState::NotStarted;
 }
@@ -78,6 +80,7 @@ void MDLC_MineModel::req_openCell(int row, int col, void (*ans_cellOpened)(std::
 
         if (m_mineSetting->checkWin()) {
             setState(GameState::Win);
+            APIC_MineModel::newInstance()->obs_gameOver(true);
             (*p)(openedCells, false);
             return;
         }
@@ -173,4 +176,26 @@ void MDLC_MineModel::obs_gameOver(bool win)
         pc_MineModelObserver = m_pc_MineModelList.findNext();
     }
     m_pc_MineModelList.UnLock();
+}
+
+std::vector<BestTimeEntry> MDLC_MineModel::getEntries() const
+{
+    return m_bestTimesStorage->entries();
+}
+
+void MDLC_MineModel::setBestTime(BestTimeEntry entry)
+{
+    m_bestTimesStorage->addEntry(entry);
+    m_bestTimesStorage->sortEntries();
+    m_bestTimesStorage->save();
+}
+
+int MDLC_MineModel::getCurrentSizeField() const
+{
+    return m_rows;
+}
+
+int MDLC_MineModel::getCurrentMinesField() const
+{
+    return m_mineCount;
 }

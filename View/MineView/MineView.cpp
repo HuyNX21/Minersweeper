@@ -1,6 +1,8 @@
 #include "MineView.h"
 #include "BoardSellectModeWidget.h"
 #include "BoardGameContainerWidget.h"
+#include "BestTimesDialog.h"
+#include "BestTimeEntry.h"
 
 MineView::MineView(QWidget* parent)
     : QMainWindow(parent)
@@ -61,4 +63,19 @@ SidePanel* MineView::sidePanel() const
 BoardSellectModeWidget* MineView::sellectBoard() const
 {
     return m_selectScreen;
+}
+
+BestTimesDialog* MineView::bestTimesDialog() const
+{
+    return m_boardScreen->bestTimesDialog();
+}
+
+void MineView::showBestTimesRequested(const std::vector<BestTimeEntry> entry)
+{
+    m_boardScreen->showBestTimesRequested(entry);
+}
+
+void MineView::showWinMode(const BestTimeEntry entry)
+{
+    m_boardScreen->showWinMode(entry);
 }

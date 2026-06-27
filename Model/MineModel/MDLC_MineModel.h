@@ -5,6 +5,7 @@
 #include "BLKC_Common.h"
 #include "APIC_MineModel.h"
 #include "LIBC_List.h"
+#include "BestTimesStorage.h"
 
 #include "GameState.h"
 
@@ -27,6 +28,11 @@ class MDLC_MineModel : public APIC_MineModel
         virtual void setState(GameState state);
         virtual void obs_minesRevealed(int rowMineTriggered, int colMineTriggered, std::vector<std::pair<int,int>> mines);
         virtual void obs_gameOver(bool win);
+    
+        virtual std::vector<BestTimeEntry> getEntries() const;
+        virtual int getCurrentSizeField() const;
+        virtual int getCurrentMinesField() const;
+        void setBestTime(BestTimeEntry);
 
     private:
         MDLC_MineModel();
@@ -40,6 +46,7 @@ class MDLC_MineModel : public APIC_MineModel
         MineSetting* m_mineSetting;
         GameState m_state;
         static LIBC_List<APIC_MineModelObserver>  	m_pc_MineModelList;
+        BestTimesStorage* m_bestTimesStorage;
 };
 
 #endif // MDLC_MINE_MODEL_H

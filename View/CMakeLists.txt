@@ -33,6 +33,9 @@ file(GLOB BLACKAPI_SERVER_SOURCES
 
 set(PROJECT_SOURCES
         main.cpp
+
+        MineView/BestTimeEntry.h
+
         MineView/MineView.h
         MineView/MineView.cpp
         MineView/CellButton.h
@@ -48,6 +51,8 @@ set(PROJECT_SOURCES
         MineView/Scr2/MineBoardGame.cpp
         MineView/Scr2/SidePanel.h
         MineView/Scr2/SidePanel.cpp
+        MineView/Scr2/BestTimesDialog.h
+        MineView/Scr2/BestTimesDialog.cpp
 
         MineController/MineController.h
         MineController/MineController.cpp

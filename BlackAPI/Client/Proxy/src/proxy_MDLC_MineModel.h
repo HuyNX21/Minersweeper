@@ -20,6 +20,10 @@ class Proxy_MDLC_MineModel : public Proxy_APIC_MineModel
         virtual GameState getState() const;
         virtual void obs_minesRevealed(int rowMineTriggered, int colMineTriggered, std::vector<std::pair<int,int>> mines);
         virtual void obs_gameOver(bool win);
+        virtual std::vector<BestTimeEntry> getEntries() const;
+        virtual int getCurrentSizeField() const;
+        virtual int getCurrentMinesField() const;
+        virtual void setBestTime(BestTimeEntry entry);
 };  
 
 #endif // PROXY_MDLC_MINEMODEL_H

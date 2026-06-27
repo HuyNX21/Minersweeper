@@ -9,6 +9,7 @@
 #include "Server/Stub/include/stub_APIC_MineModel.h"
 #include "stub_APIC_MineModelObserver.h"
 #include "ObserverAttachDetachStub.h"
+#include "BestTimeEntry.h"
 
 void Stub_APIC_MineModel::dispatch( BLKS_COMMONID* type_id , void* ObjectPt, void* pt )
 {
@@ -48,6 +49,18 @@ void Stub_APIC_MineModel::dispatch( BLKS_COMMONID* type_id , void* ObjectPt, voi
             break;
         case UISEP__APIC_MineModel__obs_gameOver__11:
             Stub_APIC_MineModel_obs_gameOver_11(type_id, pc_APIC_MineModel, pt);
+            break;
+        case UISEP__APIC_MineModel__getEntries__12:
+            Stub_APIC_MineModel_getEntries_12(type_id, pc_APIC_MineModel, pt);
+            break;
+        case UISEP__APIC_MineModel__getCurrentSizeField__13:
+            Stub_APIC_MineModel_getCurrentSizeField_13(type_id, pc_APIC_MineModel, pt);
+            break;
+        case UISEP__APIC_MineModel__getCurrentMinesField__14:
+            Stub_APIC_MineModel_getCurrentMinesField_14(type_id, pc_APIC_MineModel, pt);
+            break;
+        case UISEP__APIC_MineModel__setBestTime__15:
+            Stub_APIC_MineModel_setBestTime_15(type_id, pc_APIC_MineModel, pt);
             break;
         default:
             LOG_ERROR("ClassMethodID: %d not found", type_id->ClassMethodID);
@@ -319,6 +332,109 @@ void Stub_APIC_MineModel::Stub_APIC_MineModel_obs_gameOver_11( BLKS_COMMONID* ty
     // Base Post.
     BLKC_StubMethodTemplate::BLKD_StubParaType_post( type_id , pc_APIC_MineModel , pt,
                                                     win,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy );
+}
+
+std::vector<BestTimeEntry> Stub_APIC_MineModel::Stub_APIC_MineModel_getEntries_12( BLKS_COMMONID* type_id , APIC_MineModel* pc_APIC_MineModel, void* pt )
+{
+    // Param.
+    std::vector<BestTimeEntry> ret;
+
+    RENEW_FUNC_INFO();
+
+    // Base Pre.
+    BLKC_StubMethodTemplate::BLKD_StubParaType_pre( type_id , pc_APIC_MineModel , pt,
+                                                    ret,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy );
+
+    // APIC_MineModel::getEntries().
+    ret = pc_APIC_MineModel->getEntries( );
+
+    // Base Post.
+    BLKC_StubMethodTemplate::BLKD_StubParaType_post( type_id , pc_APIC_MineModel , pt, ret,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy );
+    return ret;
+}
+
+int Stub_APIC_MineModel::Stub_APIC_MineModel_getCurrentSizeField_13( BLKS_COMMONID* type_id , APIC_MineModel* pc_APIC_MineModel, void* pt )
+{
+    // Param.
+    int ret = 0;
+
+    RENEW_FUNC_INFO();
+
+    // Base Pre.
+    BLKC_StubMethodTemplate::BLKD_StubParaType_pre( type_id , pc_APIC_MineModel , pt,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy );
+
+    // APIC_MineModel::getCurrentSizeField().
+    ret = pc_APIC_MineModel->getCurrentSizeField( );
+
+    // Base Post.
+    BLKC_StubMethodTemplate::BLKD_StubParaType_post( type_id , pc_APIC_MineModel , pt, ret,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy );
+    return ret;
+}
+
+int Stub_APIC_MineModel::Stub_APIC_MineModel_getCurrentMinesField_14( BLKS_COMMONID* type_id , APIC_MineModel* pc_APIC_MineModel, void* pt )
+{
+    // Param.
+    int ret = 0;
+
+    RENEW_FUNC_INFO();
+
+    // Base Pre.
+    BLKC_StubMethodTemplate::BLKD_StubParaType_pre( type_id , pc_APIC_MineModel , pt,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy );
+
+    // APIC_MineModel::getCurrentMinesField().
+    ret = pc_APIC_MineModel->getCurrentMinesField( );
+
+    // Base Post.
+    BLKC_StubMethodTemplate::BLKD_StubParaType_post( type_id , pc_APIC_MineModel , pt, ret,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy );
+    return ret;
+}
+
+void Stub_APIC_MineModel::Stub_APIC_MineModel_setBestTime_15( BLKS_COMMONID* type_id , APIC_MineModel* pc_APIC_MineModel, void* pt )
+{
+    // Param.
+    BestTimeEntry entry;
+
+    RENEW_FUNC_INFO();
+
+    // Base Pre.
+    BLKC_StubMethodTemplate::BLKD_StubParaType_pre( type_id , pc_APIC_MineModel , pt,
+                                                    entry,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
+                                                    mMarshalDummy );
+
+    // APIC_MineModel::setBestTime().
+    pc_APIC_MineModel->setBestTime( entry );
+
+    // Base Post.
+    BLKC_StubMethodTemplate::BLKD_StubParaType_post( type_id , pc_APIC_MineModel , pt,
+                                                    entry,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
                                                     mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
                                                     mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,mMarshalDummy,
                                                     mMarshalDummy );

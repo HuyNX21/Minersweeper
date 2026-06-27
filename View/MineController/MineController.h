@@ -49,6 +49,7 @@ class MineController : public QObject
         void onStartOverRequested();
         void onChangeDifficultyRequested();
         void onPauseRequested();
+        void onBestTimeConfirmed(const BestTimeEntry entry);
 
     private:
         MineView*  m_view;   ///< View layer

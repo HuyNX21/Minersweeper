@@ -4,6 +4,7 @@
 #include "BLKC_Common.h"
 
 #include "GameState.h"
+#include "BestTimeEntry.h"
 
 class Proxy_APIC_MineModelObserver
 {
@@ -35,6 +36,10 @@ class Proxy_APIC_MineModel
         virtual GameState getState() const = 0;
         virtual void obs_minesRevealed(int rowMineTriggered, int colMineTriggered, std::vector<std::pair<int,int>> mines) = 0;
         virtual void obs_gameOver(bool win) = 0;
+        virtual std::vector<BestTimeEntry> getEntries() const = 0;
+        virtual int getCurrentSizeField() const = 0;
+        virtual int getCurrentMinesField() const = 0;
+        virtual void setBestTime(BestTimeEntry entry) = 0;
 };  
 
 #endif // PROXY_APIC_MINEMODEL_H

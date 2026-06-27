@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 add_compile_options(-Wall -Wextra -O2)
 find_package(Threads REQUIRED)
+find_package(OpenSSL REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 file(GLOB MODEL_BLACKAPI_SOURCES
     ${CMAKE_SOURCE_DIR}/BlackAPI/BaseLibrary/*.cpp
@@ -31,6 +33,8 @@ add_executable(ModelMine
     MineModel/APIC_MineModel.cpp
     MineModel/MDLC_MineModel.cpp
     MineModel/MineSetting.cpp
+    MineModel/HmacUtils.cpp
+    MineModel/BestTimesStorage.cpp
     ${MODEL_BLACKAPI_SOURCES}
 )
 
@@ -61,4 +65,9 @@ target_include_directories(ModelMine PRIVATE
     ${CMAKE_SOURCE_DIR}/BlackAPI/CoreSrc
 )
 
-target_link_libraries(ModelMine PRIVATE Threads::Threads)
+target_link_libraries(ModelMine
+    PRIVATE
+        Threads::Threads
+        OpenSSL::Crypto
+        nlohmann_json::nlohmann_json
+)

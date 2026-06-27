@@ -4,6 +4,8 @@
 #include "BLKC_Common.h"
 #include "GameState.h"
 
+class BestTimeEntry;
+
 class APIC_MineModelObserver{
     public:
         virtual void obs_gameStateChanged(GameState state) = 0;
@@ -27,6 +29,10 @@ class APIC_MineModel
         virtual void setState(GameState state) = 0;
         virtual void obs_minesRevealed(int rowMineTriggered, int colMineTriggered, std::vector<std::pair<int,int>> mines) = 0;
         virtual void obs_gameOver(bool win) = 0;
+        virtual std::vector<BestTimeEntry> getEntries() const = 0;
+        virtual int getCurrentSizeField() const = 0;
+        virtual int getCurrentMinesField() const = 0;
+        virtual void setBestTime(BestTimeEntry entry) = 0;
 };
 
 #endif

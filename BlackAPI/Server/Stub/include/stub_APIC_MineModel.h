@@ -19,6 +19,10 @@ class Stub_APIC_MineModel{
         void Stub_APIC_MineModel_setState_09( BLKS_COMMONID* type_id , APIC_MineModel* pc_APIC_MineModel, void* pt );
         void Stub_APIC_MineModel_obs_minesRevealed_10( BLKS_COMMONID* type_id , APIC_MineModel* pc_APIC_MineModel, void* pt );
         void Stub_APIC_MineModel_obs_gameOver_11( BLKS_COMMONID* type_id , APIC_MineModel* pc_APIC_MineModel, void* pt );
+        std::vector<BestTimeEntry> Stub_APIC_MineModel_getEntries_12( BLKS_COMMONID* type_id , APIC_MineModel* pc_APIC_MineModel, void* pt );
+        int Stub_APIC_MineModel_getCurrentSizeField_13( BLKS_COMMONID* type_id , APIC_MineModel* pc_APIC_MineModel, void* pt );
+        int Stub_APIC_MineModel_getCurrentMinesField_14( BLKS_COMMONID* type_id , APIC_MineModel* pc_APIC_MineModel, void* pt );
+        void Stub_APIC_MineModel_setBestTime_15( BLKS_COMMONID* type_id , APIC_MineModel* pc_APIC_MineModel, void* pt );
 
         static void Stub_ans_openCell__99(std::vector<PointCellOpened> openedCells, bool gameState);
         static void Stub_ans_toggleFlag__99(int row, int col, bool flag, int flagUsed, int totalMines, bool b_result);

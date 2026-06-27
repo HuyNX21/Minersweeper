@@ -6,6 +6,7 @@
 #include "BLKC_UnmarshalWrapper.h"
 #include "unmarsahling.h"
 #include "GameState.h"
+#include "BestTimeEntry.h"
 
 int mUnmarshalDummyValiable = 0;
 void* mUnmarshalDummy = &mUnmarshalDummyValiable;
@@ -307,6 +308,61 @@ void* BLKC_UnmarshalWrapper::unmarshal( uchar* buf, std::vector<std::pair<int,in
 		pt = (uchar*)unmarshal_int(pt, (void*)&p.first, datasize, 1);
 		pt = (uchar*)unmarshal_int(pt, (void*)&p.second, datasize, 1);
 		data.push_back(p);
+	}
+
+	return pt;
+}
+
+void* BLKC_UnmarshalWrapper::unmarshal( uchar* buf, std::vector<BestTimeEntry>& data, short* datasize, short num )
+{
+	DEBUG_PRINT_UNMARSHALING_WRAPPER
+	uchar* pt = buf;
+
+	short count = 0;
+	pt = (uchar*)unmarshal_signed_short(pt, (void*)&count, datasize, 1);
+
+	data.clear();
+	data.reserve(count);
+
+	for (int i = 0; i < count; ++i) {
+		BestTimeEntry entry;
+		pt = (uchar*)unmarshal_int(pt, (void*)&entry.size, datasize, 1);
+		pt = (uchar*)unmarshal_int(pt, (void*)&entry.mines, datasize, 1);
+		pt = (uchar*)unmarshal_int(pt, (void*)&entry.seconds, datasize, 1);
+
+		// Unmarshal the playerName string
+		short nameLength = 0;
+		pt = (uchar*)unmarshal_signed_short(pt, (void*)&nameLength, datasize, 1);
+		if (nameLength > 0) {
+			entry.playerName.resize(nameLength);
+			pt = (uchar*)unmarshal_char(pt, (void*)entry.playerName.data(), datasize, nameLength);
+		} else {
+			entry.playerName.clear();
+		}
+
+		data.push_back(entry);
+	}
+
+	return pt;
+}
+
+void* BLKC_UnmarshalWrapper::unmarshal( uchar* buf, BestTimeEntry& data, short* datasize, short num )
+{
+	DEBUG_PRINT_UNMARSHALING_WRAPPER
+	uchar* pt = buf;
+
+	pt = (uchar*)unmarshal_int(pt, (void*)&data.size, datasize, 1);
+	pt = (uchar*)unmarshal_int(pt, (void*)&data.mines, datasize, 1);
+	pt = (uchar*)unmarshal_int(pt, (void*)&data.seconds, datasize, 1);
+
+	// Unmarshal the playerName string
+	short nameLength = 0;
+	pt = (uchar*)unmarshal_signed_short(pt, (void*)&nameLength, datasize, 1);
+	if (nameLength > 0) {
+		data.playerName.resize(nameLength);
+		pt = (uchar*)unmarshal_char(pt, (void*)data.playerName.data(), datasize, nameLength);
+	} else {
+		data.playerName.clear();
 	}
 
 	return pt;

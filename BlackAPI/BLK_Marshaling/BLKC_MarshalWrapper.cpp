@@ -3,6 +3,7 @@
 #include "BLKC_MarshalWrapper.h"
 #include "marsahling.h"
 #include "GameState.h"
+#include "BestTimeEntry.h"
 
 int mMarshalDummyValiable = 0;
 void* mMarshalDummy = &mMarshalDummyValiable;
@@ -288,6 +289,51 @@ void* BLKC_MarshalWrapper::marshal( uchar* buf, std::vector<std::pair<int,int>>&
 	for (const auto& e : data) {
 		pt = (uchar*)marshal_int(pt, (void*)&e.first, datasize, 1);
 		pt = (uchar*)marshal_int(pt, (void*)&e.second, datasize, 1);
+	}
+
+	return pt;
+}
+
+void* BLKC_MarshalWrapper::marshal( uchar* buf, std::vector<BestTimeEntry>& data, short* datasize, short num )
+{
+	DEBUG_PRINT_MARSHALING_WRAPPER
+	uchar* pt = buf;
+
+	short count = (short)data.size();
+	pt = (uchar*)marshal_signed_short(pt, (void*)&count, datasize, 1);
+
+	for (const auto& e : data) {
+		pt = (uchar*)marshal_int(pt, (void*)&e.size, datasize, 1);
+		pt = (uchar*)marshal_int(pt, (void*)&e.mines, datasize, 1);
+		pt = (uchar*)marshal_int(pt, (void*)&e.seconds, datasize, 1);
+
+		// Marshal the playerName string
+		short nameLength = static_cast<short>(e.playerName.size());
+		pt = (uchar*)marshal_signed_short(pt, (void*)&nameLength, datasize, 1);
+		if (nameLength > 0) {
+			char* playerNamePtr = const_cast<char*>(e.playerName.c_str());
+			pt = (uchar*)marshal_char(pt, (void*)playerNamePtr, datasize, nameLength);
+		}
+	}
+
+	return pt;
+}
+
+void* BLKC_MarshalWrapper::marshal( uchar* buf, BestTimeEntry& data, short* datasize, short num )
+{
+	DEBUG_PRINT_MARSHALING_WRAPPER
+	uchar* pt = buf;
+
+	pt = (uchar*)marshal_int(pt, (void*)&data.size, datasize, 1);
+	pt = (uchar*)marshal_int(pt, (void*)&data.mines, datasize, 1);
+	pt = (uchar*)marshal_int(pt, (void*)&data.seconds, datasize, 1);
+
+	// Marshal the playerName string
+	short nameLength = static_cast<short>(data.playerName.size());
+	pt = (uchar*)marshal_signed_short(pt, (void*)&nameLength, datasize, 1);
+	if (nameLength > 0) {
+		char* playerNamePtr = const_cast<char*>(data.playerName.c_str());
+		pt = (uchar*)marshal_char(pt, (void*)playerNamePtr, datasize, nameLength);
 	}
 
 	return pt;

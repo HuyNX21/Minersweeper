@@ -137,3 +137,55 @@ void Proxy_MDLC_MineModel::obs_gameOver(bool win)
             mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy,
             mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy );
 }
+
+std::vector<BestTimeEntry> Proxy_MDLC_MineModel::getEntries() const
+{
+    std::vector<BestTimeEntry> v_ret;
+
+    uint32_t ClassMethodID = UISEP__APIC_MineModel__getEntries__12;
+
+    BLKC_ProxyMethodTemplate::BLKD_ProxyParaType( ClassMethodID, this, 
+            v_ret, mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy,
+            mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy,
+            mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy );
+
+    return v_ret;
+}
+
+int Proxy_MDLC_MineModel::getCurrentSizeField() const
+{
+    int i_ret;
+
+    uint32_t ClassMethodID = UISEP__APIC_MineModel__getCurrentSizeField__13;
+
+    BLKC_ProxyMethodTemplate::BLKD_ProxyParaType( ClassMethodID, this, 
+            i_ret, mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy,
+            mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy,
+            mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy );
+
+    return i_ret;
+}
+
+int Proxy_MDLC_MineModel::getCurrentMinesField() const
+{
+    int i_ret;
+
+    uint32_t ClassMethodID = UISEP__APIC_MineModel__getCurrentMinesField__14;
+
+    BLKC_ProxyMethodTemplate::BLKD_ProxyParaType( ClassMethodID, this, 
+            i_ret, mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy,
+            mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy,
+            mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy );
+
+    return i_ret;
+}
+
+void Proxy_MDLC_MineModel::setBestTime(BestTimeEntry entry)
+{
+    uint32_t ClassMethodID = UISEP__APIC_MineModel__setBestTime__15;
+
+    BLKC_ProxyMethodTemplate::BLKD_ProxyParaType( ClassMethodID, this, 
+            entry, mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy,
+            mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy,
+            mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy, mMarshalDummy );
+}

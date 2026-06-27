@@ -9,7 +9,9 @@
 class QStackedWidget;
 class BoardSellectModeWidget;
 class BoardGameContainerWidget;
+class BestTimesDialog;
 class MineBoardGame;
+class BestTimeEntry;
 class SidePanel;
 
 class MineView : public QMainWindow {
@@ -23,6 +25,9 @@ public:
     MineBoardGame* mineBoard() const;
     SidePanel* sidePanel() const;
     BoardSellectModeWidget* sellectBoard() const;
+    BestTimesDialog* bestTimesDialog() const;
+    void showBestTimesRequested(const std::vector<BestTimeEntry>);
+    void showWinMode(const BestTimeEntry entry);
 
 private:
     QStackedWidget*    m_stack;

@@ -40,6 +40,10 @@ static const uint32_t UISEP__APIC_MineModel__getState__8                        
 static const uint32_t UISEP__APIC_MineModel__setState__9                        = ( UISEP__APIC_MineModel__BASE__ | 0x0009 );                       // APIC_MineModel::setState.
 static const uint32_t UISEP__APIC_MineModel__obs_minesRevealed__10              = ( UISEP__APIC_MineModel__BASE__ | 0x000A );                       // APIC_MineModel::obs_minesRevealed.
 static const uint32_t UISEP__APIC_MineModel__obs_gameOver__11                   = ( UISEP__APIC_MineModel__BASE__ | 0x000B );                       // APIC_MineModel::obs_gameOver.
+static const uint32_t UISEP__APIC_MineModel__getEntries__12                     = ( UISEP__APIC_MineModel__BASE__ | 0x000C );                       // APIC_MineModel::getEntries.
+static const uint32_t UISEP__APIC_MineModel__getCurrentSizeField__13            = ( UISEP__APIC_MineModel__BASE__ | 0x000D );                       // APIC_MineModel::getCurrentSizeField.
+static const uint32_t UISEP__APIC_MineModel__getCurrentMinesField__14           = ( UISEP__APIC_MineModel__BASE__ | 0x000E );                       // APIC_MineModel::getCurrentMinesField.
+static const uint32_t UISEP__APIC_MineModel__setBestTime__15                    = ( UISEP__APIC_MineModel__BASE__ | 0x000F );                       // APIC_MineModel::setBestTime.
 
 static const uint32_t UISEP__APIC_MineModelObserver__BASE__                     = 0x0003 << 16;
 static const uint32_t UISEP__APIC_MineModelObserver__obs_gameStateChanged__1    = ( UISEP__APIC_MineModelObserver__BASE__ | 0x0001 );               // APIC_MineModelObserver::obs_gameStateChanged.

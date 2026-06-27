@@ -9,6 +9,7 @@
 
 // forward declare GameState
 enum class GameState;
+struct BestTimeEntry;
 
 // #define BLK_UNMARSHALING_WRAPPER_DEBUG (1)
 #if defined(BLK_UNMARSHALING_WRAPPER_DEBUG)
@@ -181,6 +182,10 @@ class BLKC_UnmarshalWrapper
 		virtual void* unmarshal( uchar* buf, ::GameState& data, short* datasize = 0, short num = 1 );
 
 		virtual void* unmarshal( uchar* buf, std::vector<std::pair<int,int>>& data, short* datasize, short num = 1 );
+
+		virtual void* unmarshal( uchar* buf, std::vector<BestTimeEntry>& data, short* datasize, short num = 1 );
+
+		virtual void* unmarshal( uchar* buf, BestTimeEntry& data, short* datasize, short num = 1 );
 
 		// ============================================================================================================
 		// =================================================== END ====================================================
