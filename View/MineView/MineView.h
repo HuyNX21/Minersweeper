@@ -18,6 +18,7 @@ class MineView : public QMainWindow {
     Q_OBJECT
 public:
     explicit MineView(QWidget* parent = nullptr);
+    MineView* self();
     void showSelectScreen();
     void showBoardScreen();
     void setBoardSize(int size);

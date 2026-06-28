@@ -37,4 +37,5 @@ ButtonsSelectMode::ButtonsSelectMode(QWidget* parent)
     connect(btn8,  &QPushButton::clicked, this, &ButtonsSelectMode::mode8Requested);
     connect(btn16, &QPushButton::clicked, this, &ButtonsSelectMode::mode16Requested);
     connect(btn32, &QPushButton::clicked, this, &ButtonsSelectMode::mode32Requested);
+    connect(btnQ,  &QPushButton::clicked, this, &ButtonsSelectMode::modeCustomRequested);
 }

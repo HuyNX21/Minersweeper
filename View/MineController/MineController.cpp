@@ -4,6 +4,7 @@
 #include "SidePanel.h"
 #include "BoardSellectModeWidget.h"
 #include "BestTimesDialog.h"
+#include "CustomGameDialog.h"
 
 MineController* MineController::s_instance = nullptr;
 
@@ -35,6 +36,9 @@ MineController::MineController(MineView* view, QObject* parent)
     // ===== View -> Controller =====
     connect(m_view->sellectBoard(), &BoardSellectModeWidget::modeSelected,
             this,   &MineController::onModeSelected);
+
+    connect(m_view->sellectBoard(), &BoardSellectModeWidget::customModeRequested,
+            this,   &MineController::onCustomModeRequested);
 
     connect(m_view->mineBoard(), &MineBoardGame::cellClicked,
             this, &MineController::onCellClicked);
@@ -287,4 +291,15 @@ void MineController::MCC_MineControllerObserver::obs_gameOver(bool win)
 void MineController::onBestTimeConfirmed(const BestTimeEntry entry)
 {
     Proxy_APIC_MineModel::newInstance()->setBestTime(entry);
+}
+
+void MineController::onCustomModeRequested()
+{
+    CustomGameDialog dialog(m_view->self());
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        int size = dialog.boardWidthHeight();
+        int mines = dialog.minePercent();
+        onModeSelected(size, mines);
+    }
 }

@@ -43,6 +43,8 @@ private:
     QTableWidget* m_table;
     QPushButton*  m_actionButton;
     int           m_entryRow = -1;
+
+    QLabel* m_title;
 };
 
 #endif // BESTTIMESDIALOG_H

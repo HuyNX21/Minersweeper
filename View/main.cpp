@@ -3,6 +3,7 @@
 #include "MineController.h"
 #include "BLKC_ProxyManager.h"
 #include "SignalHandle.h"
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {

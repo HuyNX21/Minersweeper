@@ -154,7 +154,20 @@ void MineBoardGame::openCell(int row, int col, int value)
 
     // Text
     if (value > 0)
+    {
         btn->setText(QString::number(value));
+
+        QFont font = btn->font();
+        font.setBold(true);
+        font.setPixelSize(m_buttonCellSize * 0.60);
+        btn->setFont(font);
+
+        btn->setStyleSheet(R"(
+        QPushButton {
+            color: #3f4141;
+        }
+        )");
+    }
     else
         btn->setText("");
 

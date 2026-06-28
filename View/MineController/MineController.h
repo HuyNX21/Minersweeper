@@ -44,6 +44,7 @@ class MineController : public QObject
 
     private slots:
         void onModeSelected(int size, int mines);
+        void onCustomModeRequested();
         void onCellClicked(int row, int col);
         void onCellRightClicked(int row, int col);
         void onStartOverRequested();

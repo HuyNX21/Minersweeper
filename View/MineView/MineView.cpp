@@ -25,6 +25,11 @@ MineView::MineView(QWidget* parent)
 
 }
 
+MineView* MineView::self()
+{
+    return this;
+}
+
 void MineView::clearFixedSize()
 {
     this->setMinimumSize(QSize(0, 0));

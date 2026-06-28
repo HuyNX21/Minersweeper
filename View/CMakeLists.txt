@@ -44,6 +44,8 @@ set(PROJECT_SOURCES
         MineView/Scr1/BoardSellectModeWidget.cpp
         MineView/Scr1/ButtonsSelectMode.h
         MineView/Scr1/ButtonsSelectMode.cpp
+        MineView/Scr1/CustomGameDialog.h
+        MineView/Scr1/CustomGameDialog.cpp
 
         MineView/Scr2/BoardGameContainerWidget.h
         MineView/Scr2/BoardGameContainerWidget.cpp

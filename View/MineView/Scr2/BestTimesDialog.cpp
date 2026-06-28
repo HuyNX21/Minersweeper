@@ -3,7 +3,7 @@
 BestTimesDialog::BestTimesDialog(QWidget* parent)
     : QDialog(parent)
 {
-    setWindowTitle(tr("Best Times"));
+    // setWindowTitle(tr("Best Times"));
     setModal(true);
     resize(520, 360);
 
@@ -12,14 +12,14 @@ BestTimesDialog::BestTimesDialog(QWidget* parent)
     mainLayout->setSpacing(8);
 
     // ===== Title =====
-    auto* title = new QLabel(tr("Best Times"), this);
-    QFont titleFont = title->font();
+    m_title = new QLabel(tr("Best Times"), this);
+    QFont titleFont = m_title->font();
     titleFont.setBold(true);
     titleFont.setPointSize(titleFont.pointSize() + 2);
-    title->setFont(titleFont);
-    title->setAlignment(Qt::AlignCenter);
+    m_title->setFont(titleFont);
+    m_title->setAlignment(Qt::AlignCenter);
 
-    mainLayout->addWidget(title);
+    mainLayout->addWidget(m_title);
 
     // ===== Table =====
     m_table = new QTableWidget(this);
@@ -99,6 +99,8 @@ static void parseMinefield(
 
 void BestTimesDialog::showBestTimes(const std::vector<BestTimeEntry> times)
 {
+    m_title->setText(tr("Best Times"));
+
     m_table->setRowCount(0);
 
     for (int i = 0; i < times.size(); ++i)
@@ -130,6 +132,8 @@ void BestTimesDialog::showBestTimes(const std::vector<BestTimeEntry> times)
 
 void BestTimesDialog::enterWinMode(const BestTimeEntry entry)
 {
+    m_title->setText(tr("Congratulations!"));
+
     m_mode = Mode::Entry;
 
     const int row = m_table->rowCount();

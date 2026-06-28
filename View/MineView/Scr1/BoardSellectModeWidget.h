@@ -19,6 +19,7 @@ public:
 
 signals:
     void modeSelected(int size, int mines);
+    void customModeRequested();
 
 private:
     ButtonsSelectMode* m_button;

@@ -13,6 +13,7 @@ signals:
     void mode8Requested();
     void mode16Requested();
     void mode32Requested();
+    void modeCustomRequested();
 };
 
 #endif
