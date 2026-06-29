@@ -46,8 +46,11 @@ void MineView::showBoardScreen()
 {
     m_stack->setCurrentIndex(1);
 
+    // Force layout recalculation before locking the window size.
+    m_boardScreen->adjustSize();
+    m_stack->adjustSize();
     this->adjustSize();
-    this->setFixedSize(size());
+    this->setFixedSize(this->sizeHint());
 }
 
 void MineView::setBoardSize(int size)

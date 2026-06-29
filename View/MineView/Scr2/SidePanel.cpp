@@ -169,7 +169,7 @@ void SidePanel::setFlagCount(int used, int total)
 
 bool SidePanel::showConfirmNewGameDialog()
 {
-    QMessageBox msgBox(this);
+    QMessageBox msgBox(window());
     msgBox.setWindowTitle("Start New Game");
     msgBox.setText("Do you want to start a new game?");
     msgBox.setInformativeText(

@@ -17,7 +17,7 @@ ButtonsSelectMode::ButtonsSelectMode(QWidget* parent)
 
     auto *btn8 = new QPushButton(QObject::tr("8 x 8\n 10 mines"), this);
     auto *btn16 = new QPushButton(QObject::tr("16 x 16\n 40 mines"), this);
-    auto *btn32 = new QPushButton(QObject::tr("32 x 32\n 99 mines"), this);
+    auto *btn32 = new QPushButton(QObject::tr("32 x 32\n 199 mines"), this);
     auto *btnQ = new QPushButton(QObject::tr("?\n custom"), this);
 
     for (auto* b : {btn8, btn16, btn32, btnQ})

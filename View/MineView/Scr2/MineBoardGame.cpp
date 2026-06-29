@@ -4,6 +4,16 @@
 
 namespace {
 
+void applyDefaultCellVisual(QPushButton* btn, int buttonCellSize)
+{
+    btn->setStyleSheet("");
+
+    QFont font = btn->font();
+    font.setBold(true);
+    font.setPixelSize(qMax(12, static_cast<int>(buttonCellSize * 0.60)));
+    btn->setFont(font);
+}
+
 const char* BOARD_STYLE = R"(
 
 QPushButton {
@@ -83,22 +93,35 @@ void MineBoardGame::setBoardSize(int size)
     if (size <= 0)
         return;
 
-    m_boardSize = size;
+    int nextButtonCellSize = 25;
 
     if(size <= 8)
-        m_buttonCellSize = 45;
+        nextButtonCellSize = 45;
     else if(size <= 16)
-        m_buttonCellSize = 35;
+        nextButtonCellSize = 35;
     else if(size <= 32)
-        m_buttonCellSize = 25;
+        nextButtonCellSize = 25;
     else
-        m_buttonCellSize = 25;
+        nextButtonCellSize = 25;
+
+    const bool boardChanged =
+        (m_boardSize != size) ||
+        (m_buttonCellSize != nextButtonCellSize) ||
+        m_buttons.isEmpty();
+
+    if (!boardChanged)
+        return;
+
+    m_boardSize = size;
+    m_buttonCellSize = nextButtonCellSize;
     
     rebuildBoard();
 }
 
 void MineBoardGame::rebuildBoard()
 {
+    setUpdatesEnabled(false);
+
     while (QLayoutItem* item = m_grid->takeAt(0)) {
         delete item->widget();
         delete item;
@@ -114,6 +137,7 @@ void MineBoardGame::rebuildBoard()
             auto* btn = new CellButton(this);
 
             btn->setFixedSize(m_buttonCellSize, m_buttonCellSize);
+            applyDefaultCellVisual(btn, m_buttonCellSize);
 
             btn->setProperty("cellValue", QVariant());
             btn->setFlagged(false);
@@ -133,7 +157,16 @@ void MineBoardGame::rebuildBoard()
         }
     }
 
-    this->setFixedSize(((m_buttonCellSize * m_boardSize) + 7), ((m_buttonCellSize * m_boardSize) + 7));
+    const int spacing = m_grid->spacing();
+    const QMargins margins = m_grid->contentsMargins();
+    const int boardPixel = (m_buttonCellSize * m_boardSize)
+                         + (spacing * (m_boardSize - 1));
+
+    this->setFixedSize(boardPixel + margins.left() + margins.right(),
+                       boardPixel + margins.top() + margins.bottom());
+    this->updateGeometry();
+
+    setUpdatesEnabled(true);
 }
 
 void MineBoardGame::openCell(int row, int col, int value)
@@ -178,20 +211,26 @@ void MineBoardGame::openCell(int row, int col, int value)
 
 void MineBoardGame::resetBoard()
 {
+    setUpdatesEnabled(false);
+
     for (int r = 0; r < m_boardSize; ++r) {
         for (int c = 0; c < m_boardSize; ++c) {
             QPushButton* btn = m_buttons[r][c];
             if (!btn)
                 continue;
 
+            auto* cell = qobject_cast<CellButton*>(btn);
+            if (cell)
+                cell->setFlagged(false);
+
             btn->setEnabled(true);
             btn->setText("");
             btn->setProperty("cellValue", QVariant());
-
-            btn->style()->unpolish(btn);
-            btn->style()->polish(btn);
+            applyDefaultCellVisual(btn, m_buttonCellSize);
         }
     }
+
+    setUpdatesEnabled(true);
 }
 
 void MineBoardGame::revealMine(int row, int col, bool flagMineTriggered)
@@ -233,11 +272,16 @@ void MineBoardGame::showPausedOverlay(bool show)
 
 void MineBoardGame::setFlag(int row, int col, bool flagged)
 {
+    if (row < 0 || row >= m_boardSize ||
+        col < 0 || col >= m_boardSize)
+        return;
+
     auto* btn = qobject_cast<CellButton*>(m_buttons[row][col]);
     if (!btn)
         return;
 
     btn->setFlagged(flagged);
+    applyDefaultCellVisual(btn, m_buttonCellSize);
 
     if (flagged) {
         btn->setText("P");

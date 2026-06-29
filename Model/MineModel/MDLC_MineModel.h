@@ -47,6 +47,7 @@ class MDLC_MineModel : public APIC_MineModel
         GameState m_state;
         static LIBC_List<APIC_MineModelObserver>  	m_pc_MineModelList;
         BestTimesStorage* m_bestTimesStorage;
+        bool m_bestTimesLoaded = false;
 };
 
 #endif // MDLC_MINE_MODEL_H

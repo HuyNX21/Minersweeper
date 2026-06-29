@@ -1,5 +1,7 @@
 #include "BestTimesDialog.h"
 
+#include <QWidget>
+
 BestTimesDialog::BestTimesDialog(QWidget* parent)
     : QDialog(parent)
 {
@@ -47,6 +49,7 @@ BestTimesDialog::BestTimesDialog(QWidget* parent)
 
     connect(m_actionButton, &QPushButton::clicked,
             this, &BestTimesDialog::onDoneClicked);
+
 }
 
 inline QString formatTime(int seconds)
@@ -173,6 +176,28 @@ void BestTimesDialog::updateUiForMode()
     {
         m_actionButton->setText(tr("Exit"));
     }
+}
+
+void BestTimesDialog::showEvent(QShowEvent* event)
+{
+    QDialog::showEvent(event);
+    centerOnMainWindow();
+}
+
+void BestTimesDialog::centerOnMainWindow()
+{
+    QWidget* anchor = parentWidget();
+    if (anchor)
+        anchor = anchor->window();
+
+    if (!anchor)
+        return;
+
+    const QRect anchorRect = anchor->frameGeometry();
+    const QRect dialogRect = frameGeometry();
+
+    move(anchorRect.center().x() - (dialogRect.width() / 2),
+         anchorRect.center().y() - (dialogRect.height() / 2));
 }
 
 void BestTimesDialog::onDoneClicked()

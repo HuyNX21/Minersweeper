@@ -29,7 +29,12 @@ void MDLC_MineModel::setup(int rows, int cols, int mineCount)
     m_mineCount = mineCount;
 
     m_mineSetting->init(rows, cols);
-    m_bestTimesStorage->load();
+
+    if (!m_bestTimesLoaded)
+    {
+        m_bestTimesStorage->load();
+        m_bestTimesLoaded = true;
+    }
 
     m_state = GameState::NotStarted;
 }

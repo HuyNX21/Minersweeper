@@ -23,7 +23,7 @@ void CustomGameDialog::setupUi()
 {
     setWindowTitle("Custom Game");
     setModal(true);
-    setFixedSize(360, 220);
+    setFixedSize(360, 245);
 
     setStyleSheet(
         "QDialog {"
@@ -37,13 +37,16 @@ void CustomGameDialog::setupUi()
     m_percentLabel->setContentsMargins(0, 5, 0, 0);
 
     m_sizeSpin = new QSpinBox;
-    m_sizeSpin->setRange(5, 32);
+    m_sizeSpin->setRange(5, 40);
     m_sizeSpin->setValue(8);
 
-    m_percentSpin = new QSpinBox;
+    m_sizeHintLabel = new QLabel;
+    QFont sizeHintFont = m_sizeHintLabel->font();
+    sizeHintFont.setPointSize(9);
+    m_sizeHintLabel->setFont(sizeHintFont);
+    m_sizeHintLabel->setStyleSheet("color: gray;");
 
-    // m_sizeSpin->setFixedWidth(160);
-    // m_percentSpin->setFixedWidth(160);
+    m_percentSpin = new QSpinBox;
 
     m_mineHintLabel = new QLabel;
     QFont hintFont = m_mineHintLabel->font();
@@ -104,12 +107,13 @@ void CustomGameDialog::setupUi()
     m_sizeSpin->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_percentSpin->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-    formLayout->addWidget(m_sizeLabel,      0, 0, Qt::AlignLeft | Qt::AlignVCenter);
+    formLayout->addWidget(m_sizeLabel,      0, 0, Qt::AlignLeft | Qt::AlignTop);
     formLayout->addWidget(m_sizeSpin,       0, 1);
+    formLayout->addWidget(m_sizeHintLabel,  1, 1, Qt::AlignLeft);
 
-    formLayout->addWidget(m_percentLabel,   1, 0, Qt::AlignLeft | Qt::AlignTop);
-    formLayout->addWidget(m_percentSpin,    1, 1);
-    formLayout->addWidget(m_mineHintLabel,  2, 1, Qt::AlignLeft);
+    formLayout->addWidget(m_percentLabel,   2, 0, Qt::AlignLeft | Qt::AlignTop);
+    formLayout->addWidget(m_percentSpin,    2, 1);
+    formLayout->addWidget(m_mineHintLabel,  3, 1, Qt::AlignLeft);
 
     //-------------------------------------------------
     // Main
@@ -166,7 +170,12 @@ void CustomGameDialog::setMinePercent(int percent)
 
 void CustomGameDialog::updateMinePercentLimit(int boardSize)
 {
-    int maxMine = ((boardSize * boardSize - 1) - (boardSize * 2));
+    m_sizeHintLabel->setText(
+        QString("Allowed: %1 ~ %2 size.")
+            .arg(m_sizeSpin->minimum())
+            .arg(m_sizeSpin->maximum()));
+
+    int maxMine = ((boardSize * boardSize - 1) - ((boardSize + boardSize) * 2));
     int minMine = 10;
 
     if (boardSize <= 8)
@@ -190,7 +199,7 @@ void CustomGameDialog::updateMinePercentLimit(int boardSize)
     }
 
     m_mineHintLabel->setText(
-        QString("Allowed: %1 ~ %2 mines")
+        QString("Allowed: %1 ~ %2 mines.")
             .arg(minMine)
             .arg(maxMine));
 }

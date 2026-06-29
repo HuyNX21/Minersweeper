@@ -36,6 +36,7 @@ private:
     QPushButton* m_playButton;
     QPushButton* m_cancelButton;
 
+    QLabel* m_sizeHintLabel;
     QLabel* m_mineHintLabel;
 };
 

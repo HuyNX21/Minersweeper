@@ -14,7 +14,7 @@ BoardSellectModeWidget::BoardSellectModeWidget(QWidget* parent)
             this,     [this]() { emit modeSelected(16, 40); });
 
     connect(m_button, &ButtonsSelectMode::mode32Requested,
-            this,     [this]() { emit modeSelected(32, 99); });
+            this,     [this]() { emit modeSelected(32, 199); });
 
     connect(m_button, &ButtonsSelectMode::modeCustomRequested,
             this,     [this]() { emit customModeRequested(); });

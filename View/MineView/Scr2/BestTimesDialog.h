@@ -10,6 +10,7 @@
 #include <QLineEdit>
 #include <QRegularExpression>
 #include <QDebug>
+#include <QShowEvent>
 
 #include "BestTimeEntry.h"
 
@@ -35,6 +36,8 @@ private slots:
     void onDoneClicked();
 
 private:
+    void showEvent(QShowEvent* event) override;
+    void centerOnMainWindow();
     void updateUiForMode();
 
 private:
