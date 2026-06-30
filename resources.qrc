@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="flag.png">resources/icons/flag.png</file>
+        <file alias="bomb.png">resources/icons/bomb.png</file>
+        <file alias="collision.png">resources/icons/collision.png</file>
+        <file alias="clock.png">resources/icons/clock.png</file>
+    </qresource>
+</RCC>

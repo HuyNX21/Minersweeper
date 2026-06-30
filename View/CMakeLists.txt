@@ -33,6 +33,7 @@ file(GLOB BLACKAPI_SERVER_SOURCES
 
 set(PROJECT_SOURCES
         main.cpp
+    ${CMAKE_SOURCE_DIR}/resources.qrc
 
         MineView/BestTimeEntry.h
 

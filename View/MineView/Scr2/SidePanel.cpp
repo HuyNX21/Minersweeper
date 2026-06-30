@@ -1,5 +1,7 @@
 #include "SidePanel.h"
 
+#include <QPixmap>
+
 
 SidePanel::SidePanel(QWidget* parent)
     : QWidget(parent)
@@ -13,9 +15,11 @@ SidePanel::SidePanel(QWidget* parent)
     flagBlock->setSpacing(0);
 
     // ===== FLAG =====
-    m_flagLabel = new QLabel("Flag", this);
+    m_flagLabel = new QLabel(this);
     m_flagLabel->setAlignment(Qt::AlignHCenter);
-    m_flagLabel->setStyleSheet("font-size: 25px;");
+    m_flagLabel->setPixmap(
+        QPixmap(":/icons/flag.png").scaled(26, 26, Qt::KeepAspectRatio, Qt::SmoothTransformation)
+        );
 
     // ===== FLAG COUNT =====
     m_flagCountLabel   = new QLabel("0 / 0", this);
@@ -30,9 +34,11 @@ SidePanel::SidePanel(QWidget* parent)
     timerBlock->setSpacing(0);
 
     // ===== CLOCK ICON =====
-    m_clockIcon = new QLabel("Timer", this);
+    m_clockIcon = new QLabel(this);
     m_clockIcon->setAlignment(Qt::AlignHCenter);
-    m_clockIcon->setStyleSheet("font-size: 25px;");
+    m_clockIcon->setPixmap(
+        QPixmap(":/icons/clock.png").scaled(26, 26, Qt::KeepAspectRatio, Qt::SmoothTransformation)
+        );
 
     // ===== TIME LABEL =====
     m_timeLabel   = new QLabel("00:00", this);

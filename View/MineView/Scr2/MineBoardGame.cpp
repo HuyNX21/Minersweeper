@@ -2,7 +2,19 @@
 
 #include "CellButton.h"
 
+#include <QIcon>
+#include <QPixmap>
+
 namespace {
+
+QIcon makeColorPreservedIcon(const QString& resourcePath)
+{
+    QIcon icon;
+    QPixmap pix(resourcePath);
+    icon.addPixmap(pix, QIcon::Normal, QIcon::Off);
+    icon.addPixmap(pix, QIcon::Disabled, QIcon::Off);
+    return icon;
+}
 
 void applyDefaultCellVisual(QPushButton* btn, int buttonCellSize)
 {
@@ -183,6 +195,7 @@ void MineBoardGame::openCell(int row, int col, int value)
 
     // Set state
     btn->setEnabled(false);
+    btn->setIcon(QIcon());
     btn->setProperty("cellValue", value);
 
     // Text
@@ -225,6 +238,7 @@ void MineBoardGame::resetBoard()
 
             btn->setEnabled(true);
             btn->setText("");
+            btn->setIcon(QIcon());
             btn->setProperty("cellValue", QVariant());
             applyDefaultCellVisual(btn, m_buttonCellSize);
         }
@@ -244,15 +258,19 @@ void MineBoardGame::revealMine(int row, int col, bool flagMineTriggered)
         return;
 
     btn->setEnabled(false);
+    const int iconPx = qMax(14, static_cast<int>(m_buttonCellSize * 0.70));
+    btn->setIconSize(QSize(iconPx, iconPx));
 
     if(flagMineTriggered)
     {
-        btn->setText("X");
+        btn->setIcon(makeColorPreservedIcon(":/icons/collision.png"));
+        btn->setText("");
         btn->setProperty("cellValue", "trig");
     }
     else
     {
-        btn->setText("*");
+        btn->setIcon(makeColorPreservedIcon(":/icons/bomb.png"));
+        btn->setText("");
         btn->setProperty("cellValue", "bomb");
     }
 
@@ -284,8 +302,12 @@ void MineBoardGame::setFlag(int row, int col, bool flagged)
     applyDefaultCellVisual(btn, m_buttonCellSize);
 
     if (flagged) {
-        btn->setText("P");
+        const int iconPx = qMax(14, static_cast<int>(m_buttonCellSize * 0.70));
+        btn->setIcon(makeColorPreservedIcon(":/icons/flag.png"));
+        btn->setIconSize(QSize(iconPx, iconPx));
+        btn->setText("");
     } else {
+        btn->setIcon(QIcon());
         btn->setText("");
     }
 
